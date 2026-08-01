@@ -22,12 +22,12 @@ export function SectionHeader({
         className
       )}
     >
-      <div className="max-w-2xl text-start">
-        <h2 className="text-xl font-semibold leading-8 text-foreground">
+      <div className="max-w-3xl text-start">
+        <h2 className="text-2xl font-semibold leading-9 text-foreground sm:text-3xl sm:leading-tight">
           {title}
         </h2>
         {description ? (
-          <p className="mt-1 text-sm leading-6 text-muted-foreground">
+          <p className="mt-3 text-base leading-8 text-muted-foreground">
             {description}
           </p>
         ) : null}

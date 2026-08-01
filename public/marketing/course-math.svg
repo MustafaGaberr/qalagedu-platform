@@ -1,0 +1,11 @@
+<svg width="640" height="360" viewBox="0 0 640 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="math-title">
+  <title id="math-title">Math course visual</title>
+  <rect width="640" height="360" rx="34" fill="#F6F8F7"/>
+  <rect x="86" y="70" width="468" height="220" rx="28" fill="#106C64" fill-opacity="0.08"/>
+  <path d="M136 242L214 150L282 210L368 104L504 246" stroke="#106C64" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M138 111H215" stroke="#D9A23D" stroke-width="12" stroke-linecap="round"/>
+  <path d="M138 145H190" stroke="#D9A23D" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="504" cy="246" r="24" fill="#106C64"/>
+  <circle cx="368" cy="104" r="18" fill="#D9A23D"/>
+  <rect x="398" y="82" width="106" height="44" rx="14" fill="white"/>
+</svg>

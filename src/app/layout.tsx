@@ -22,6 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(appConfig.url),
   title: appConfig.name,
   description: appConfig.description,
 };

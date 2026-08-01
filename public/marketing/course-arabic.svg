@@ -1,0 +1,10 @@
+<svg width="640" height="360" viewBox="0 0 640 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arabic-title">
+  <title id="arabic-title">Arabic course visual</title>
+  <rect width="640" height="360" rx="34" fill="#F7F0E3"/>
+  <rect x="136" y="74" width="368" height="222" rx="28" fill="white" fill-opacity="0.8"/>
+  <path d="M212 132H428" stroke="#106C64" stroke-width="12" stroke-linecap="round"/>
+  <path d="M212 178H384" stroke="#106C64" stroke-width="10" stroke-linecap="round" stroke-opacity="0.72"/>
+  <path d="M212 222H338" stroke="#106C64" stroke-width="10" stroke-linecap="round" stroke-opacity="0.42"/>
+  <circle cx="466" cy="118" r="44" fill="#D9A23D" fill-opacity="0.24"/>
+  <path d="M150 96L186 72L222 96V276L186 252L150 276V96Z" fill="#106C64"/>
+</svg>

@@ -5,15 +5,21 @@ export type NavigationItem = {
   disabled?: boolean;
 };
 
+export type SocialLink = {
+  title: string;
+  href: string;
+};
+
 export const appConfig = {
-  name: "منصة قلعة التعليمية",
-  shortName: "قلعة",
-  description: "منصة تعليمية عربية موجهة لتجربة تعلم الطلاب.",
+  name: "Qalag EDU",
+  shortName: "Qalag",
+  url: "https://qalagedu.example",
+  description: "منصة عربية منظمة تساعد الطالب على متابعة الدروس والاختبارات والتقدم من مكان واحد.",
   center: {
-    name: "مركز قلعة التعليمي",
+    name: "منصة السنتر التعليمية",
     logo: {
       src: "/brand/qalagedu-mark.svg",
-      alt: "شعار مركز قلعة التعليمي",
+      alt: "علامة Qalag EDU المؤقتة",
       width: 40,
       height: 40,
     },
@@ -25,28 +31,67 @@ export const appConfig = {
   },
   primaryNavigation: [
     {
-      title: "نظرة عامة",
-      href: "#",
-      description: "مساحة مستقبلية لملخص رحلة الطالب.",
-      disabled: true,
+      title: "الرئيسية",
+      href: "/",
+      description: "مقدمة المنصة وتجربة الطالب.",
+    },
+    {
+      title: "التجربة",
+      href: "/#experience",
+      description: "كيف يتعلم الطالب خطوة بخطوة.",
+    },
+    {
+      title: "المميزات",
+      href: "/#features",
+      description: "نظرة على أدوات المتابعة والتنظيم.",
     },
     {
       title: "الدورات",
+      href: "/#courses",
+      description: "نماذج تسويقية لدورات قادمة.",
+    },
+    {
+      title: "الأسئلة",
+      href: "/#faq",
+      description: "إجابات سريعة لأهم الأسئلة.",
+    },
+  ] satisfies NavigationItem[],
+  authNavigation: {
+    login: {
+      title: "تسجيل الدخول",
+      href: "/login",
+    },
+    register: {
+      title: "إنشاء حساب",
+      href: "/register",
+    },
+  },
+  legalLinks: [
+    {
+      title: "الشروط والأحكام",
       href: "#",
-      description: "مساحة مستقبلية لقائمة الدورات التعليمية.",
+      description: "رابط قانوني مؤقت.",
       disabled: true,
     },
     {
-      title: "الاختبارات",
+      title: "سياسة الخصوصية",
       href: "#",
-      description: "مساحة مستقبلية للاختبارات والتقييمات.",
-      disabled: true,
-    },
-    {
-      title: "التقدم",
-      href: "#",
-      description: "مساحة مستقبلية لمتابعة تقدم الطالب.",
+      description: "رابط قانوني مؤقت.",
       disabled: true,
     },
   ] satisfies NavigationItem[],
+  socialLinks: [
+    {
+      title: "فيسبوك",
+      href: "#",
+    },
+    {
+      title: "يوتيوب",
+      href: "#",
+    },
+    {
+      title: "إنستجرام",
+      href: "#",
+    },
+  ] satisfies SocialLink[],
 } as const;
