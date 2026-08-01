@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { LoaderCircleIcon } from "lucide-react";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -32,6 +33,7 @@ import {
 import type { AuthSubmissionState } from "@/features/auth/types/auth";
 
 export function LoginForm() {
+  const router = useRouter();
   const [submission, setSubmission] = React.useState<AuthSubmissionState>({
     status: "idle",
   });
@@ -61,6 +63,10 @@ export function LoginForm() {
       status: result.ok ? "success" : "error",
       message: result.message,
     });
+
+    if (result.ok) {
+      router.push("/dashboard");
+    }
   }
 
   return (
