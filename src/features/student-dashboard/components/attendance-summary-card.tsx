@@ -2,18 +2,10 @@ import Link from "next/link";
 import { CalendarCheckIcon } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Progress,
-  ProgressLabel,
-} from "@/components/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress, ProgressLabel } from "@/components/ui/progress";
+import { formatArabicDate } from "@/features/student-attendance/lib/attendance-labels";
 import type { AttendanceSummary } from "@/features/student-dashboard/types/dashboard";
-import { cn } from "@/lib/utils";
 
 type AttendanceSummaryCardProps = {
   attendance: AttendanceSummary;
@@ -61,17 +53,11 @@ export function AttendanceSummaryCard({
         </div>
         <div className="rounded-lg bg-secondary/65 p-3 text-sm leading-6 text-muted-foreground">
           آخر تسجيل: {attendance.latestRecord.statusLabel} في{" "}
-          {attendance.latestRecord.course} - {attendance.latestRecord.dateLabel}
+          {attendance.latestRecord.course} -{" "}
+          {formatArabicDate(attendance.latestRecord.dateLabel)}
         </div>
-        <Link
-          href="#attendance"
-          aria-disabled="true"
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "pointer-events-none opacity-60"
-          )}
-        >
-          سجل الحضور الكامل لاحقا
+        <Link href="/attendance" className={buttonVariants({ variant: "outline" })}>
+          سجل الحضور الكامل
         </Link>
       </CardContent>
     </Card>

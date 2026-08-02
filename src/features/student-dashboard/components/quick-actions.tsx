@@ -45,10 +45,10 @@ export function QuickActions({ actions }: QuickActionsProps) {
                 key={action.id}
                 type="button"
                 disabled
-                className="flex min-h-16 items-center gap-3 rounded-lg border bg-muted/45 px-3 text-start opacity-70"
+                className="flex min-h-16 min-w-0 items-center gap-3 rounded-lg border bg-muted/45 px-3 text-start opacity-70"
               >
                 <Icon aria-hidden="true" className="size-4 shrink-0 text-primary" />
-                <span>
+                <span className="min-w-0">
                   <span className="block text-sm font-medium text-foreground">
                     {action.title}
                   </span>
@@ -66,11 +66,11 @@ export function QuickActions({ actions }: QuickActionsProps) {
               href={action.href ?? "#latest-result"}
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "h-auto min-h-16 justify-start gap-3 px-3 text-start"
+                "h-auto min-h-16 min-w-0 justify-start gap-3 whitespace-normal px-3 text-start"
               )}
             >
               <Icon aria-hidden="true" data-icon="inline-start" />
-              <span>
+              <span className="min-w-0">
                 <span className="block text-sm font-medium">{action.title}</span>
                 <span className="block text-xs leading-5 text-muted-foreground">
                   {action.description}

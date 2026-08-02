@@ -25,6 +25,15 @@ const primaryMobileItems = studentNavigation.filter((item) =>
 
 export function StudentMobileNavigation() {
   const pathname = usePathname();
+  const moreItems = studentNavigation.filter(
+    (item) => !primaryMobileItems.includes(item)
+  );
+  const hasActiveMoreItem = moreItems.some(
+    (item) =>
+      !item.disabled &&
+      (item.href === pathname ||
+        (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`)))
+  );
 
   return (
     <nav
@@ -57,7 +66,15 @@ export function StudentMobileNavigation() {
         })}
 
         <Sheet>
-          <SheetTrigger render={<Button variant="ghost" className="min-h-14 flex-col gap-1 px-1 text-[0.72rem]" />}>
+          <SheetTrigger
+            render={
+              <Button
+                variant={hasActiveMoreItem ? "secondary" : "ghost"}
+                className="min-h-14 flex-col gap-1 px-1 text-[0.72rem]"
+                aria-current={hasActiveMoreItem ? "page" : undefined}
+              />
+            }
+          >
             <MenuIcon aria-hidden="true" className="size-4" />
             المزيد
           </SheetTrigger>
@@ -72,6 +89,10 @@ export function StudentMobileNavigation() {
             <div className="grid gap-2 px-4 pb-5 sm:grid-cols-2">
               {studentNavigation.map((item) => {
                 const Icon = studentNavigationIcons[item.icon];
+                const isActive =
+                  item.href === pathname ||
+                  (item.href !== "/dashboard" &&
+                    pathname.startsWith(`${item.href}/`));
 
                 if (item.disabled) {
                   return (
@@ -91,7 +112,13 @@ export function StudentMobileNavigation() {
                   <Link
                     key={item.title}
                     href={item.href}
-                    className="flex min-h-12 items-center gap-3 rounded-lg border bg-card px-3 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "flex min-h-12 items-center gap-3 rounded-lg border px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+                      isActive
+                        ? "border-primary/30 bg-secondary text-primary"
+                        : "bg-card text-foreground"
+                    )}
                   >
                     <Icon aria-hidden="true" className="size-4 text-primary" />
                     <span>{item.title}</span>

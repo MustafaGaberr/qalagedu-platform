@@ -43,8 +43,8 @@ export const studentNavigation = [
   },
   {
     title: "الحضور",
-    href: "/dashboard#attendance",
-    description: "ملخص حضور الطالب الحالي.",
+    href: "/attendance",
+    description: "ملخص الحضور وسجل الحصص حسب المادة.",
     icon: "attendance",
   },
   {
@@ -56,10 +56,9 @@ export const studentNavigation = [
   },
   {
     title: "بطاقة الطالب",
-    href: "#",
-    description: "عرض البطاقة سيتم لاحقا دون QR في هذه المرحلة.",
+    href: "/student-card",
+    description: "بطاقة هوية الطالب والكود التعريفي التجريبي.",
     icon: "student-card",
-    disabled: true,
   },
   {
     title: "الملف الشخصي",

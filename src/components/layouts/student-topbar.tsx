@@ -54,7 +54,11 @@ export function StudentTopbar({
             ? "تفاصيل النتيجة"
             : pathname === "/results"
               ? "النتائج"
-              : pathname.startsWith("/courses/")
+              : pathname === "/student-card"
+                ? "بطاقة الطالب"
+                : pathname === "/attendance"
+                  ? "الحضور"
+                  : pathname.startsWith("/courses/")
                 ? "تفاصيل الكورس"
                 : pathname === "/courses"
                   ? "كورساتي"
