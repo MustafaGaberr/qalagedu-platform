@@ -22,6 +22,8 @@ export type LessonResource = {
 
 export type LessonAssessmentPlaceholder = {
   id: string;
+  examId?: string;
+  resultAttemptId?: string;
   title: string;
   type: "exam" | "assignment";
   typeLabel: string;

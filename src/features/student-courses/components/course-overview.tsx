@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   CalendarClockIcon,
   ClipboardCheckIcon,
@@ -6,6 +7,7 @@ import {
   ListVideoIcon,
 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -85,6 +87,14 @@ export function CourseOverview({ course }: CourseOverviewProps) {
             <p>لا توجد حصص قادمة لهذا الكورس حاليا.</p>
           )}
         </div>
+        <Button
+          render={<Link href="/exams" />}
+          nativeButton={false}
+          variant="outline"
+          className="w-full"
+        >
+          عرض الاختبارات والتقييمات
+        </Button>
       </CardContent>
     </Card>
   );

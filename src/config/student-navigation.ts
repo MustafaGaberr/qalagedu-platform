@@ -31,15 +31,14 @@ export const studentNavigation = [
   },
   {
     title: "الاختبارات",
-    href: "#",
-    description: "سيتم تفعيلها في مرحلة لاحقة.",
+    href: "/exams",
+    description: "الاختبارات والتقييمات المتاحة والقادمة.",
     icon: "exams",
-    disabled: true,
   },
   {
     title: "النتائج",
-    href: "/dashboard#latest-result",
-    description: "آخر نتيجة منشورة للطالب.",
+    href: "/results",
+    description: "سجل نتائج الاختبارات ومحاولات الطالب.",
     icon: "results",
   },
   {

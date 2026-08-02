@@ -81,6 +81,8 @@ export const mockLessonExtras: Record<string, LessonExtra> = {
     ],
     assessment: {
       id: "math-basic-derivatives-quiz",
+      examId: "math-basic-derivatives-quiz",
+      resultAttemptId: "attempt-math-basic-derivatives-1",
       title: "اختبار سريع على قواعد الاشتقاق",
       type: "exam",
       typeLabel: "اختبار",
@@ -128,6 +130,7 @@ export const mockLessonExtras: Record<string, LessonExtra> = {
     ],
     assessment: {
       id: "math-tangent-assignment",
+      examId: "math-tangent-assignment",
       title: "تكليف قصير على المماس",
       type: "assignment",
       typeLabel: "تكليف",

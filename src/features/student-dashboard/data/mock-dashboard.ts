@@ -103,7 +103,7 @@ export const mockStudentDashboardData: StudentDashboardData = {
     },
   ],
   latestResult: {
-    id: "result-physics-quiz",
+    id: "attempt-physics-wave-quiz-1",
     examName: "اختبار قصير: الحركة الموجية",
     course: "الفيزياء",
     score: 34,
@@ -172,8 +172,15 @@ export const mockStudentDashboardData: StudentDashboardData = {
     },
     {
       id: "review-results",
+      href: "/results",
       title: "مراجعة النتائج",
       description: "انتقال داخل لوحة الطالب الحالية.",
+    },
+    {
+      id: "open-exams",
+      title: "عرض الاختبارات",
+      description: "انتقل إلى الاختبارات المتاحة والقادمة.",
+      href: "/exams",
     },
     {
       id: "download-summary",

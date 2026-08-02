@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   BadgeCheckIcon,
+  ClipboardListIcon,
   DownloadIcon,
   KeyRoundIcon,
   ListChecksIcon,
@@ -18,6 +19,7 @@ const actionIcons = {
   "student-card": BadgeCheckIcon,
   "activation-code": KeyRoundIcon,
   "review-results": ListChecksIcon,
+  "open-exams": ClipboardListIcon,
   "download-summary": DownloadIcon,
 } as const;
 
@@ -61,7 +63,7 @@ export function QuickActions({ actions }: QuickActionsProps) {
           return (
             <Link
               key={action.id}
-              href="#latest-result"
+              href={action.href ?? "#latest-result"}
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "h-auto min-h-16 justify-start gap-3 px-3 text-start"

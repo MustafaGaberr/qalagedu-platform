@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import { studentNavigationIcons } from "./student-navigation-icons";
 
 const primaryMobileItems = studentNavigation.filter((item) =>
-  ["home", "courses", "results", "attendance"].includes(item.icon)
+  ["home", "courses", "exams", "results"].includes(item.icon)
 );
 
 export function StudentMobileNavigation() {

@@ -1,4 +1,5 @@
-import { ClipboardListIcon, LockIcon } from "lucide-react";
+import Link from "next/link";
+import { ClipboardListIcon, FileCheck2Icon, LockIcon } from "lucide-react";
 
 import { StatusBadge } from "@/components/shared/status-badge";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,12 @@ export function LessonAssessmentCard({ assessment }: LessonAssessmentCardProps) 
   }
 
   const canOpen = isOpenableLessonStatus(assessment.status);
+  const href =
+    assessment.status === "completed" && assessment.resultAttemptId
+      ? `/results/${assessment.resultAttemptId}`
+      : canOpen && assessment.examId
+        ? `/exams/${assessment.examId}`
+        : null;
 
   return (
     <section className="rounded-lg border bg-card p-4 text-start shadow-sm shadow-foreground/5 sm:p-5">
@@ -47,14 +54,26 @@ export function LessonAssessmentCard({ assessment }: LessonAssessmentCardProps) 
           </p>
         </div>
       </div>
-      <Button className="mt-4 w-full" disabled variant={canOpen ? "outline" : "secondary"}>
-        {canOpen ? (
-          <ClipboardListIcon data-icon="inline-start" />
-        ) : (
+      {href ? (
+        <Button
+          render={<Link href={href} />}
+          nativeButton={false}
+          className="mt-4 w-full"
+          variant={assessment.status === "completed" ? "secondary" : "outline"}
+        >
+          {assessment.status === "completed" ? (
+            <FileCheck2Icon data-icon="inline-start" />
+          ) : (
+            <ClipboardListIcon data-icon="inline-start" />
+          )}
+          {assessment.status === "completed" ? "عرض النتيجة" : assessment.actionLabel}
+        </Button>
+      ) : (
+        <Button className="mt-4 w-full" disabled variant="secondary">
           <LockIcon data-icon="inline-start" />
-        )}
-        {assessment.actionLabel}
-      </Button>
+          {assessment.actionLabel}
+        </Button>
+      )}
     </section>
   );
 }

@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { TrendingUpIcon } from "lucide-react";
 
 import { StatusBadge } from "@/components/shared/status-badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -63,6 +65,13 @@ export function LatestResultCard({ result }: LatestResultCardProps) {
           />
           <p>{result.message}</p>
         </div>
+        <Button
+          render={<Link href={`/results/${result.id}`} />}
+          nativeButton={false}
+          variant="outline"
+        >
+          عرض تفاصيل النتيجة
+        </Button>
       </CardContent>
     </Card>
   );

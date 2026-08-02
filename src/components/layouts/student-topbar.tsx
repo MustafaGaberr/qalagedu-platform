@@ -44,11 +44,21 @@ export function StudentTopbar({
   const unreadCount = notifications.filter((item) => item.unread).length;
   const resolvedTitle = pathname.includes("/lessons/")
     ? "تفاصيل الدرس"
-    : pathname.startsWith("/courses/")
-      ? "تفاصيل الكورس"
-      : pathname === "/courses"
-        ? "كورساتي"
-        : title;
+    : pathname.includes("/take")
+      ? "محاولة اختبار"
+      : pathname.startsWith("/exams/")
+        ? "تفاصيل الاختبار"
+        : pathname === "/exams"
+          ? "الاختبارات"
+          : pathname.startsWith("/results/")
+            ? "تفاصيل النتيجة"
+            : pathname === "/results"
+              ? "النتائج"
+              : pathname.startsWith("/courses/")
+                ? "تفاصيل الكورس"
+                : pathname === "/courses"
+                  ? "كورساتي"
+                  : title;
 
   return (
     <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur supports-backdrop-filter:bg-background/75">
