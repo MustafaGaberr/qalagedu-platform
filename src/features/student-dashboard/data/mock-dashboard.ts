@@ -58,7 +58,7 @@ export const mockStudentDashboardData: StudentDashboardData = {
   ],
   activeCourses: activeDashboardCourses,
   nextLesson: {
-    id: "lesson-derivatives",
+    id: "math-derivatives-motion",
     courseId: "math-3sec",
     courseName: "الرياضيات التطبيقية",
     teacher: "أ. محمود سامي",

@@ -15,6 +15,7 @@ import type {
   CourseEnrollmentStatus,
   StudentCourseDetails,
 } from "@/features/student-courses/types/courses";
+import { isOpenableLessonStatus } from "@/features/student-lessons/lib/lesson-status";
 
 type CourseDetailHeaderProps = {
   course: StudentCourseDetails;
@@ -30,8 +31,17 @@ const statusTone: Record<
 };
 
 export function CourseDetailHeader({ course }: CourseDetailHeaderProps) {
-  const actionDisabled =
-    course.enrollmentStatus === "requires-renewal" || !course.nextLesson;
+  const nextLesson = course.nextLessonId
+    ? course.modules
+        .flatMap((module) => module.lessons)
+        .find((lesson) => lesson.id === course.nextLessonId)
+    : null;
+  const continueHref =
+    course.enrollmentStatus !== "requires-renewal" &&
+    nextLesson &&
+    isOpenableLessonStatus(nextLesson.status)
+      ? `/courses/${course.id}/lessons/${nextLesson.id}`
+      : null;
 
   return (
     <section className="rounded-lg border bg-card p-4 shadow-sm shadow-foreground/5 sm:p-5">
@@ -74,7 +84,7 @@ export function CourseDetailHeader({ course }: CourseDetailHeaderProps) {
             </span>
             <span className="inline-flex items-center gap-1.5">
               <UsersRoundIcon aria-hidden="true" className="size-4 text-primary" />
-              {course.grade} • {course.group}
+              {course.grade} - {course.group}
             </span>
             <span className="inline-flex items-center gap-1.5">
               <Clock3Icon aria-hidden="true" className="size-4 text-primary" />
@@ -88,10 +98,22 @@ export function CourseDetailHeader({ course }: CourseDetailHeaderProps) {
                 {course.progress}%
               </span>
             </Progress>
-            <Button size="lg" disabled={actionDisabled} className="w-full lg:w-auto">
-              <PlayCircleIcon data-icon="inline-start" />
-              {course.nextLesson ? course.nextLessonActionLabel : "لا يوجد درس تال"}
-            </Button>
+            {continueHref ? (
+              <Button
+                render={<Link href={continueHref} />}
+                nativeButton={false}
+                size="lg"
+                className="w-full lg:w-auto"
+              >
+                <PlayCircleIcon data-icon="inline-start" />
+                {course.nextLessonActionLabel}
+              </Button>
+            ) : (
+              <Button size="lg" disabled className="w-full lg:w-auto">
+                <PlayCircleIcon data-icon="inline-start" />
+                {course.nextLesson ? course.nextLessonActionLabel : "لا يوجد درس تال"}
+              </Button>
+            )}
           </div>
         </div>
         <CourseVisual

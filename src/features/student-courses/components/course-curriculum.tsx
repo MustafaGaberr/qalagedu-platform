@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   CalendarClockIcon,
   CheckCircle2Icon,
@@ -17,7 +18,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Progress, ProgressLabel } from "@/components/ui/progress";
 import type {
   CourseLesson,
@@ -25,8 +26,11 @@ import type {
   LessonStatus,
   LessonType,
 } from "@/features/student-courses/types/courses";
+import { isOpenableLessonStatus } from "@/features/student-lessons/lib/lesson-status";
+import { cn } from "@/lib/utils";
 
 type CourseCurriculumProps = {
+  courseId: string;
   modules: CourseModule[];
 };
 
@@ -51,7 +55,7 @@ const lessonTypeLabel = {
   assignment: "واجب",
 } satisfies Record<LessonType, string>;
 
-export function CourseCurriculum({ modules }: CourseCurriculumProps) {
+export function CourseCurriculum({ courseId, modules }: CourseCurriculumProps) {
   if (modules.length === 0) {
     return (
       <section className="rounded-lg border bg-card p-5 text-start">
@@ -68,7 +72,7 @@ export function CourseCurriculum({ modules }: CourseCurriculumProps) {
       <div className="mb-4 text-start">
         <h2 className="text-xl font-semibold text-foreground">منهج الكورس</h2>
         <p className="mt-1 text-sm leading-6 text-muted-foreground">
-          الوحدات والدروس مرتبة حسب خطة المعلم، مع توضيح حالة كل درس.
+          الوحدات والدروس مرتبة حسب خطة المعلم، والدروس المتاحة والمكتملة تفتح صفحة الدرس مباشرة.
         </p>
       </div>
       <Accordion defaultValue={modules[0] ? [modules[0].id] : []} className="gap-3">
@@ -107,7 +111,7 @@ export function CourseCurriculum({ modules }: CourseCurriculumProps) {
             <AccordionContent className="pb-4">
               <div className="flex flex-col gap-2">
                 {module.lessons.map((lesson) => (
-                  <LessonRow key={lesson.id} lesson={lesson} />
+                  <LessonRow key={lesson.id} courseId={courseId} lesson={lesson} />
                 ))}
               </div>
             </AccordionContent>
@@ -118,10 +122,17 @@ export function CourseCurriculum({ modules }: CourseCurriculumProps) {
   );
 }
 
-function LessonRow({ lesson }: { lesson: CourseLesson }) {
+function LessonRow({
+  courseId,
+  lesson,
+}: {
+  courseId: string;
+  lesson: CourseLesson;
+}) {
   const StatusIcon = lessonStatusIcon[lesson.status];
-  const actionDisabled =
-    lesson.status === "locked" || lesson.status === "scheduled";
+  const href = isOpenableLessonStatus(lesson.status)
+    ? `/courses/${courseId}/lessons/${lesson.id}`
+    : null;
 
   return (
     <article className="grid gap-3 rounded-lg border bg-card p-3 text-start lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
@@ -168,9 +179,18 @@ function LessonRow({ lesson }: { lesson: CourseLesson }) {
           {lesson.lockedReason ? <span>{lesson.lockedReason}</span> : null}
         </div>
       </div>
-      <Button disabled={actionDisabled} variant={actionDisabled ? "secondary" : "outline"}>
-        {lesson.actionLabel}
-      </Button>
+      {href ? (
+        <Link
+          href={href}
+          className={cn(buttonVariants({ variant: "outline" }), "w-full lg:w-auto")}
+        >
+          {lesson.actionLabel}
+        </Link>
+      ) : (
+        <Button disabled variant="secondary">
+          {lesson.actionLabel}
+        </Button>
+      )}
     </article>
   );
 }

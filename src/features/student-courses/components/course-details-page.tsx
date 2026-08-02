@@ -20,7 +20,7 @@ export function CourseDetailsPage({ course }: CourseDetailsPageProps) {
             <CourseOverview course={course} />
             <CourseProgressCard course={course} />
           </div>
-          <CourseCurriculum modules={course.modules} />
+          <CourseCurriculum courseId={course.id} modules={course.modules} />
         </div>
         <CourseSideSummary course={course} />
       </div>

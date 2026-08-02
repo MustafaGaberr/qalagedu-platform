@@ -80,7 +80,9 @@ export function ContinueLessonCard({ lesson }: ContinueLessonCardProps) {
           </Button>
         ) : (
           <Button
-            render={<Link href={`/courses/${lesson.courseId}`} />}
+            render={
+              <Link href={`/courses/${lesson.courseId}/lessons/${lesson.id}`} />
+            }
             nativeButton={false}
             size="lg"
             className="w-full lg:w-auto"

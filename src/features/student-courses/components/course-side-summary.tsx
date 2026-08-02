@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   CalendarClockIcon,
   GraduationCapIcon,
@@ -9,14 +10,24 @@ import { StatusBadge } from "@/components/shared/status-badge";
 import { Button } from "@/components/ui/button";
 import { Progress, ProgressLabel } from "@/components/ui/progress";
 import type { StudentCourseDetails } from "@/features/student-courses/types/courses";
+import { isOpenableLessonStatus } from "@/features/student-lessons/lib/lesson-status";
 
 type CourseSideSummaryProps = {
   course: StudentCourseDetails;
 };
 
 export function CourseSideSummary({ course }: CourseSideSummaryProps) {
-  const canContinue =
-    course.enrollmentStatus !== "requires-renewal" && Boolean(course.nextLesson);
+  const nextLesson = course.nextLessonId
+    ? course.modules
+        .flatMap((module) => module.lessons)
+        .find((lesson) => lesson.id === course.nextLessonId)
+    : null;
+  const continueHref =
+    course.enrollmentStatus !== "requires-renewal" &&
+    nextLesson &&
+    isOpenableLessonStatus(nextLesson.status)
+      ? `/courses/${course.id}/lessons/${nextLesson.id}`
+      : null;
 
   return (
     <aside className="rounded-lg border bg-card p-4 shadow-sm shadow-foreground/5 lg:sticky lg:top-24">
@@ -53,7 +64,7 @@ export function CourseSideSummary({ course }: CourseSideSummaryProps) {
           </span>
           <span className="inline-flex items-start gap-2">
             <UserRoundIcon className="mt-1 size-4 shrink-0 text-primary" />
-            {course.teacher} • {course.group}
+            {course.teacher} - {course.group}
           </span>
           <span className="inline-flex items-start gap-2">
             <CalendarClockIcon className="mt-1 size-4 shrink-0 text-primary" />
@@ -64,9 +75,15 @@ export function CourseSideSummary({ course }: CourseSideSummaryProps) {
             {course.grade}
           </span>
         </div>
-        <Button disabled={!canContinue}>
-          {course.nextLesson ? course.nextLessonActionLabel : "لا يوجد درس متاح"}
-        </Button>
+        {continueHref ? (
+          <Button render={<Link href={continueHref} />} nativeButton={false}>
+            {course.nextLessonActionLabel}
+          </Button>
+        ) : (
+          <Button disabled>
+            {course.nextLesson ? course.nextLessonActionLabel : "لا يوجد درس متاح"}
+          </Button>
+        )}
       </div>
     </aside>
   );
