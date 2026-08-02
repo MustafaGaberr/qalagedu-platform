@@ -31,7 +31,9 @@ export function StudentSidebar({ student }: StudentSidebarProps) {
       >
         {studentNavigation.map((item) => {
           const Icon = studentNavigationIcons[item.icon];
-          const isActive = item.href === pathname;
+          const isActive =
+            item.href === pathname ||
+            (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`));
           const classes = cn(
             "flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
             isActive

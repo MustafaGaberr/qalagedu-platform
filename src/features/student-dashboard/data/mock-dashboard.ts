@@ -1,4 +1,22 @@
 import type { StudentDashboardData } from "@/features/student-dashboard/types/dashboard";
+import { mockStudentCourseSummaries } from "@/features/student-courses/data/mock-courses";
+
+const activeDashboardCourses = mockStudentCourseSummaries
+  .filter((course) => course.enrollmentStatus === "active")
+  .slice(0, 3)
+  .map((course) => ({
+    id: course.id,
+    subject: course.subject,
+    teacher: course.teacher,
+    grade: course.grade,
+    progress: course.progress,
+    completedLessons: course.completedLessons,
+    totalLessons: course.totalLessons,
+    nextLesson: course.nextLesson ?? "اكتملت كل الدروس المتاحة",
+    status: "active" as const,
+    statusLabel: "متاح",
+    tone: course.tone,
+  }));
 
 export const mockStudentDashboardData: StudentDashboardData = {
   student: {
@@ -38,47 +56,7 @@ export const mockStudentDashboardData: StudentDashboardData = {
       description: "آخر 4 اختبارات",
     },
   ],
-  activeCourses: [
-    {
-      id: "math-3sec",
-      subject: "الرياضيات التطبيقية",
-      teacher: "أ. محمود سامي",
-      grade: "الصف الثالث الثانوي",
-      progress: 68,
-      completedLessons: 8,
-      totalLessons: 12,
-      nextLesson: "تطبيقات التفاضل",
-      status: "active",
-      statusLabel: "متاح",
-      tone: "emerald",
-    },
-    {
-      id: "physics-3sec",
-      subject: "الفيزياء",
-      teacher: "د. ندى عادل",
-      grade: "الصف الثالث الثانوي",
-      progress: 54,
-      completedLessons: 6,
-      totalLessons: 11,
-      nextLesson: "دوائر التيار المتردد",
-      status: "active",
-      statusLabel: "متاح",
-      tone: "sky",
-    },
-    {
-      id: "arabic-3sec",
-      subject: "اللغة العربية",
-      teacher: "أ. هالة يوسف",
-      grade: "الصف الثالث الثانوي",
-      progress: 41,
-      completedLessons: 4,
-      totalLessons: 10,
-      nextLesson: "مدرسة الإحياء والبعث",
-      status: "review",
-      statusLabel: "مراجعة",
-      tone: "amber",
-    },
-  ],
+  activeCourses: activeDashboardCourses,
   nextLesson: {
     id: "lesson-derivatives",
     courseId: "math-3sec",

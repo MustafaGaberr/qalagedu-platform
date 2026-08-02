@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ClockIcon, LockIcon, PlayCircleIcon, UnlockIcon } from "lucide-react";
 
 import { StatusBadge } from "@/components/shared/status-badge";
@@ -72,10 +73,22 @@ export function ContinueLessonCard({ lesson }: ContinueLessonCardProps) {
             </span>
           </div>
         </div>
-        <Button size="lg" disabled={lesson.isLocked} className="w-full lg:w-auto">
-          <PlayCircleIcon data-icon="inline-start" />
-          متابعة الدرس
-        </Button>
+        {lesson.isLocked ? (
+          <Button size="lg" disabled className="w-full lg:w-auto">
+            <PlayCircleIcon data-icon="inline-start" />
+            متابعة الدرس
+          </Button>
+        ) : (
+          <Button
+            render={<Link href={`/courses/${lesson.courseId}`} />}
+            nativeButton={false}
+            size="lg"
+            className="w-full lg:w-auto"
+          >
+            <PlayCircleIcon data-icon="inline-start" />
+            متابعة الدرس
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

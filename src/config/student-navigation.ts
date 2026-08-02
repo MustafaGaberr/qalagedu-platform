@@ -25,8 +25,8 @@ export const studentNavigation = [
   },
   {
     title: "كورساتي",
-    href: "/dashboard#courses",
-    description: "معاينة الكورسات النشطة في هذه المرحلة.",
+    href: "/courses",
+    description: "كل الكورسات المسجلة وتفاصيل المنهج والدروس.",
     icon: "courses",
   },
   {

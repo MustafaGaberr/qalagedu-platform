@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   BellIcon,
   ChevronDownIcon,
@@ -39,7 +40,13 @@ export function StudentTopbar({
   student,
   notifications,
 }: StudentTopbarProps) {
+  const pathname = usePathname();
   const unreadCount = notifications.filter((item) => item.unread).length;
+  const resolvedTitle = pathname.startsWith("/courses/")
+    ? "تفاصيل الكورس"
+    : pathname === "/courses"
+      ? "كورساتي"
+      : title;
 
   return (
     <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur supports-backdrop-filter:bg-background/75">
@@ -51,7 +58,7 @@ export function StudentTopbar({
               لوحة الطالب
             </p>
             <h1 className="truncate text-lg font-semibold leading-6 text-foreground">
-              {title}
+              {resolvedTitle}
             </h1>
           </div>
         </div>

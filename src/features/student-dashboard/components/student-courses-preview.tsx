@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { EmptyState } from "@/components/shared/empty-state";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,16 @@ export function StudentCoursesPreview({ courses }: StudentCoursesPreviewProps) {
       <SectionHeader
         title="كورساتي النشطة"
         description="أقرب الكورسات التي تحتاج متابعة خلال الأسبوع الحالي."
+        action={
+          <Button
+            render={<Link href="/courses" />}
+            nativeButton={false}
+            variant="outline"
+            size="sm"
+          >
+            عرض كل الكورسات
+          </Button>
+        }
       />
       {previewCourses.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-3">

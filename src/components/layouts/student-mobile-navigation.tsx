@@ -34,7 +34,9 @@ export function StudentMobileNavigation() {
       <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
         {primaryMobileItems.map((item) => {
           const Icon = studentNavigationIcons[item.icon];
-          const isActive = item.href === pathname;
+          const isActive =
+            item.href === pathname ||
+            (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`));
 
           return (
             <Link

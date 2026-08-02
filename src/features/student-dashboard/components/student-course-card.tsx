@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUpLeftIcon } from "lucide-react";
 
 import { StatusBadge } from "@/components/shared/status-badge";
@@ -64,10 +65,21 @@ export function StudentCourseCard({ course }: StudentCourseCardProps) {
             {course.nextLesson}
           </p>
         </div>
-        <Button variant="outline" disabled={course.status === "locked"}>
-          عرض الكورس
-          <ArrowUpLeftIcon data-icon="inline-end" />
-        </Button>
+        {course.status === "locked" ? (
+          <Button variant="outline" disabled>
+            عرض الكورس
+            <ArrowUpLeftIcon data-icon="inline-end" />
+          </Button>
+        ) : (
+          <Button
+            render={<Link href={`/courses/${course.id}`} />}
+            nativeButton={false}
+            variant="outline"
+          >
+            عرض الكورس
+            <ArrowUpLeftIcon data-icon="inline-end" />
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
