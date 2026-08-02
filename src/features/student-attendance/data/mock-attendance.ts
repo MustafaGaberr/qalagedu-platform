@@ -404,7 +404,7 @@ export const mockStudentCardData: StudentCardData = {
     groupName: course.group,
     statusLabel: course.enrollmentStatusLabel,
   })),
-  qrIdentityToken: "stu_qr_mock_7F3K9X2M8Q61ZD",
+  qrIdentityToken: "mock-student-qr-identity-001",
   qrIssuedAt: "2026-06-01",
   qrStatus: "active",
 };
