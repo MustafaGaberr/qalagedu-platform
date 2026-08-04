@@ -1,0 +1,1 @@
+import {ProfilePage} from "@/features/student-account/components/account-pages";import {getStudentProfile} from "@/features/student-account/services/account-service";export default async function Page(){return <ProfilePage initial={await getStudentProfile()}/>}

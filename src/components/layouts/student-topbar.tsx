@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   BellIcon,
   ChevronDownIcon,
+  HelpCircleIcon,
   LogOutIcon,
   SettingsIcon,
   UserRoundIcon,
@@ -24,15 +26,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type {
   Student,
-  StudentNotification,
 } from "@/features/student-dashboard/types/dashboard";
+import type { StudentAccountNotification } from "@/features/student-account/types/account";
+import { studentProfileMenu } from "@/config/student-profile-menu";
+import { MockLogoutConfirmation } from "@/features/student-account/components/mock-logout-button";
 
-import { notificationIconMap } from "@/features/student-dashboard/components/notification-icons";
 
 type StudentTopbarProps = {
   title: string;
   student: Student;
-  notifications: StudentNotification[];
+  notifications: StudentAccountNotification[];
 };
 
 export function StudentTopbar({
@@ -41,7 +44,8 @@ export function StudentTopbar({
   notifications,
 }: StudentTopbarProps) {
   const pathname = usePathname();
-  const unreadCount = notifications.filter((item) => item.unread).length;
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const unreadCount = notifications.filter((item) => !item.isRead).length;
   const resolvedTitle = pathname.includes("/lessons/")
     ? "تفاصيل الدرس"
     : pathname.includes("/take")
@@ -93,41 +97,53 @@ export function StudentTopbar({
                 </span>
               ) : null}
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80 p-2">
+            <DropdownMenuContent
+              align="end"
+              className="w-80 max-w-[calc(100vw-2rem)] p-2"
+            >
               <DropdownMenuGroup className="flex flex-col gap-1">
                 <DropdownMenuLabel className="px-2 py-2 text-start">
                   التنبيهات الأخيرة
                 </DropdownMenuLabel>
                 {notifications.slice(0, 4).map((item) => {
-                  const Icon = notificationIconMap[item.type];
-
                   return (
                     <DropdownMenuItem
                       key={item.id}
+                      render={
+                        item.relatedRoute ? (
+                          <Link href={item.relatedRoute} />
+                        ) : undefined
+                      }
                       className="items-start gap-3 p-2 text-start"
                     >
                       <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary">
-                        <Icon aria-hidden="true" className="size-4" />
+                        <BellIcon aria-hidden="true" className="size-4" />
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center gap-2">
                           <span className="text-sm font-medium text-foreground">
                             {item.title}
                           </span>
-                          {item.unread ? (
-                            <span className="size-2 rounded-full bg-primary" />
+                          {!item.isRead ? (
+                            <span className="inline-flex items-center gap-1 text-[0.68rem] text-primary">
+                              <span className="size-2 rounded-full bg-primary" />
+                              غير مقروء
+                            </span>
                           ) : null}
                         </span>
                         <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">
-                          {item.description}
+                          {item.message}
                         </span>
                         <span className="mt-1 block text-[0.72rem] text-muted-foreground">
-                          {item.dateLabel}
+                          {new Intl.DateTimeFormat("ar-EG", { dateStyle: "short" }).format(new Date(item.createdAt))}
                         </span>
                       </span>
                     </DropdownMenuItem>
                   );
                 })}
+                <DropdownMenuItem render={<Link href="/notifications" />}>
+                  عرض كل الإشعارات
+                </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -159,21 +175,35 @@ export function StudentTopbar({
                 </DropdownMenuLabel>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem disabled>
-                <UserRoundIcon aria-hidden="true" />
-                الملف الشخصي
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                <SettingsIcon aria-hidden="true" />
-                إعدادات الحساب
-              </DropdownMenuItem>
+              {studentProfileMenu.map((item) => {
+                const Icon =
+                  item.icon === "profile"
+                    ? UserRoundIcon
+                    : item.icon === "settings"
+                      ? SettingsIcon
+                      : HelpCircleIcon;
+
+                return (
+                  <DropdownMenuItem
+                    key={item.href}
+                    render={<Link href={item.href} />}
+                  >
+                    <Icon aria-hidden="true" />
+                    {item.title}
+                  </DropdownMenuItem>
+                );
+              })}
               <DropdownMenuSeparator />
-              <DropdownMenuItem render={<Link href="/login" />}>
+              <DropdownMenuItem onClick={() => setLogoutOpen(true)}>
                 <LogOutIcon aria-hidden="true" />
-                خروج من التجربة
+                تسجيل الخروج
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <MockLogoutConfirmation
+            open={logoutOpen}
+            onOpenChange={setLogoutOpen}
+          />
         </div>
       </div>
     </header>

@@ -16,7 +16,7 @@ export type StudentNavigationItem = {
   disabled?: boolean;
 };
 
-export const studentNavigation = [
+export const studentNavigation: StudentNavigationItem[] = [
   {
     title: "الرئيسية",
     href: "/dashboard",
@@ -61,9 +61,8 @@ export const studentNavigation = [
   },
   {
     title: "الملف الشخصي",
-    href: "#",
+    href: "/profile",
     description: "تعديل البيانات الشخصية سيضاف لاحقا.",
     icon: "profile",
-    disabled: true,
   },
-] satisfies StudentNavigationItem[];
+];

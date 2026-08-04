@@ -1,4 +1,5 @@
-import type { Student, StudentNotification } from "@/features/student-dashboard/types/dashboard";
+import type { Student } from "@/features/student-dashboard/types/dashboard";
+import type { StudentAccountNotification } from "@/features/student-account/types/account";
 
 import { StudentMobileNavigation } from "./student-mobile-navigation";
 import { StudentSidebar } from "./student-sidebar";
@@ -7,7 +8,7 @@ import { StudentTopbar } from "./student-topbar";
 type StudentAppShellProps = {
   children: React.ReactNode;
   student: Student;
-  notifications: StudentNotification[];
+  notifications: StudentAccountNotification[];
 };
 
 export function StudentAppShell({
