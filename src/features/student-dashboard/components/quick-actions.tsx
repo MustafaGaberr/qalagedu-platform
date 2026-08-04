@@ -3,6 +3,7 @@ import {
   BadgeCheckIcon,
   ClipboardListIcon,
   DownloadIcon,
+  CreditCardIcon,
   KeyRoundIcon,
   ListChecksIcon,
 } from "lucide-react";
@@ -21,6 +22,7 @@ const actionIcons = {
   "review-results": ListChecksIcon,
   "open-exams": ClipboardListIcon,
   "download-summary": DownloadIcon,
+  "payment-review": CreditCardIcon,
 } as const;
 
 export function QuickActions({ actions }: QuickActionsProps) {

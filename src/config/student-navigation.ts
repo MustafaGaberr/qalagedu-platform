@@ -49,10 +49,9 @@ export const studentNavigation = [
   },
   {
     title: "الاشتراكات",
-    href: "#",
+    href: "/subscriptions",
     description: "سيتم تفعيلها مع مرحلة المدفوعات.",
     icon: "subscriptions",
-    disabled: true,
   },
   {
     title: "بطاقة الطالب",

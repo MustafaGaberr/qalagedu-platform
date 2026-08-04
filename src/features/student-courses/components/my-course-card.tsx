@@ -101,7 +101,7 @@ export function MyCourseCard({ course }: MyCourseCardProps) {
             </Button>
           ) : (
             <Button
-              render={<Link href={`/courses/${course.id}`} />}
+              render={<Link href="/subscriptions" />}
               nativeButton={false}
               variant="outline"
             >

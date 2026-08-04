@@ -168,7 +168,13 @@ export const mockStudentDashboardData: StudentDashboardData = {
       id: "activation-code",
       title: "إدخال كود تفعيل",
       description: "تجهيز لمسار الاشتراكات لاحقا.",
-      disabled: true,
+      href: "/subscriptions/activate",
+    },
+    {
+      id: "payment-review",
+      title: "متابعة طلب الدفع",
+      description: "عرض طلب فودافون كاش التجريبي الموجود قيد المراجعة.",
+      href: "/payments/payment-pending",
     },
     {
       id: "review-results",
