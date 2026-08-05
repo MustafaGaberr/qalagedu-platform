@@ -1,0 +1,10 @@
+export type StudyMode = "ONLINE" | "CENTER" | "BOTH";
+export type AccessPackageType = "SINGLE_LESSON" | "MONTHLY" | "TERM" | "FINAL_REVISION" | "CUSTOM";
+export type ProductType = "BOOK" | "NOTES" | "SUMMARY" | "REVISION_FILE" | "EXAM_MODEL" | "QUESTION_BANK" | "FREE_RESOURCE";
+export type CatalogTeacher = { id: string; name: string; subject: string; grades: string[]; mode: StudyMode; intro: string; initials: string; };
+export type CatalogLesson = { id: string; title: string; preview?: boolean; duration: string; };
+export type AcademicUnit = { id: string; title: string; lessons: CatalogLesson[]; examCount: number; attachmentCount: number; };
+export type AccessPackage = { id: string; type: AccessPackageType; title: string; price: number; previousPrice?: number; duration: string; scope: string; exams: number; files: number; recommended?: boolean; futureLessons?: boolean; };
+export type CenterGroup = { id: string; days: string; startTime: string; duration: string; room: string; status: "available" | "full"; price: number; };
+export type CatalogCourse = { id: string; title: string; subject: string; grade: string; gradeId: string; term: string; teacherId: string; mode: StudyMode; description: string; cover: string; coverAlt: string; updatedAt: string; featured?: boolean; revision?: boolean; units: AcademicUnit[]; packages: AccessPackage[]; groups: CenterGroup[]; onlineExams: number; attachments: number; };
+export type StoreProduct = { id: string; title: string; type: ProductType; teacherId?: string; publisher: string; grade: string; gradeId: string; subject: string; description: string; pageCount?: number; format: string; price: number; cover: string; coverAlt: string; courseId?: string; packageId?: string; };

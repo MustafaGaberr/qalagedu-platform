@@ -1,7 +1,10 @@
+"use client";
+
 import type { Student } from "@/features/student-dashboard/types/dashboard";
 import type { StudentAccountNotification } from "@/features/student-account/types/account";
 
 import { StudentMobileNavigation } from "./student-mobile-navigation";
+import { usePathname } from "next/navigation";
 import { StudentSidebar } from "./student-sidebar";
 import { StudentTopbar } from "./student-topbar";
 
@@ -16,6 +19,8 @@ export function StudentAppShell({
   student,
   notifications,
 }: StudentAppShellProps) {
+  const pathname = usePathname();
+  if (pathname === "/courses" || pathname.startsWith("/courses/")) return <>{children}</>;
   return (
     <div className="min-h-screen bg-secondary/35 lg:grid lg:grid-cols-[18rem_minmax(0,1fr)]">
       <StudentSidebar student={student} />

@@ -48,7 +48,7 @@ export const heroBanners = [
     title: "مكانك في السنتر يبدأ بخطوة بسيطة",
     description: "اطّلع على المواعيد المتاحة ثم أرسل طلب الانضمام للمجموعة المناسبة لمستواك الدراسي.",
     ctaLabel: "احجز مكانك في السنتر",
-    ctaHref: "#center-schedule",
+    ctaHref: "/center-schedule",
     textPlacement: "start",
     focalPosition: "center",
     order: 2,
@@ -62,7 +62,7 @@ export const heroBanners = [
     title: "راجع بثقة قبل الامتحان",
     description: "باقات مراجعة مركزة تساعدك على ترتيب أهم النقاط والتدريب على شكل الامتحان.",
     ctaLabel: "اكتشف المراجعات",
-    ctaHref: "#revisions",
+    ctaHref: "/courses?package=FINAL_REVISION",
     textPlacement: "start",
     focalPosition: "center",
     order: 3,
@@ -86,9 +86,9 @@ export const educationalStages = [
 ] satisfies EducationalStage[];
 
 export const teacherPreviews = [
-  { id: "ahmed-samir", name: "أ. أحمد سمير", subject: "فيزياء", grades: "الأول والثاني الثانوي", availability: "both", initials: "أ س", courseHref: "/courses?teacher=ahmed-samir", scheduleHref: "#center-schedule" },
-  { id: "mona-adel", name: "أ. منى عادل", subject: "رياضيات", grades: "الصفوف الثانوية", availability: "online", initials: "م ع", courseHref: "/courses?teacher=mona-adel" },
-  { id: "karim-hassan", name: "أ. كريم حسن", subject: "لغة عربية", grades: "الأول والثالث الثانوي", availability: "both", initials: "ك ح", courseHref: "/courses?teacher=karim-hassan", scheduleHref: "#center-schedule" },
+  { id: "nada-adel", name: "د. ندى عادل", subject: "فيزياء", grades: "الصف الثالث الثانوي", availability: "both", initials: "ن ع", courseHref: "/teachers/nada-adel", scheduleHref: "/center-schedule" },
+  { id: "mahmoud-samy", name: "أ. محمود سامي", subject: "رياضيات", grades: "الصفوف الثانوية", availability: "both", initials: "م س", courseHref: "/teachers/mahmoud-samy", scheduleHref: "/center-schedule" },
+  { id: "hala-youssef", name: "أ. هالة يوسف", subject: "لغة عربية", grades: "الأول والثالث الثانوي", availability: "online", initials: "ه ي", courseHref: "/teachers/hala-youssef" },
 ] satisfies TeacherPreview[];
 
 export const featuredCourses = [
