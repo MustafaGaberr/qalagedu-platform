@@ -1,62 +1,24 @@
+import Link from "next/link";
+import { BellIcon } from "lucide-react";
+
 import { EmptyState } from "@/components/shared/empty-state";
-import { Button } from "@/components/ui/button";
+import { SectionHeader } from "@/components/shared/section-header";
 import type { StudentDashboardData } from "@/features/student-dashboard/types/dashboard";
 
-import { AttendanceSummaryCard } from "./attendance-summary-card";
 import { ContinueLessonCard } from "./continue-lesson-card";
-import { DashboardStats } from "./dashboard-stats";
 import { DashboardWelcomeHeader } from "./dashboard-welcome-header";
-import { LatestResultCard } from "./latest-result-card";
-import { NotificationsList } from "./notifications-list";
 import { QuickActions } from "./quick-actions";
-import { ScheduleList } from "./schedule-list";
 import { StudentCoursesPreview } from "./student-courses-preview";
 
-type StudentDashboardProps = {
-  data: StudentDashboardData;
-};
+type StudentDashboardProps = { data: StudentDashboardData };
 
 export function StudentDashboard({ data }: StudentDashboardProps) {
-  const hasCourses = data.activeCourses.length > 0;
-
-  return (
-    <div className="flex flex-col gap-5 lg:gap-6">
-      <DashboardWelcomeHeader
-        student={data.student}
-        summary={data.statusSummary}
-        nextLesson={data.nextLesson}
-      />
-
-      {!hasCourses ? (
-        <EmptyState
-          title="حسابك جاهز وينتظر أول كورس"
-          description="بعد تفعيل الاشتراك سيظهر هنا الدرس التالي، جدول الحصص، ونسب التقدم الخاصة بك."
-          action={<Button disabled>إدخال كود تفعيل لاحقا</Button>}
-        />
-      ) : null}
-
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)]">
-        <div className="flex min-w-0 flex-col gap-5 lg:gap-6">
-          {data.nextLesson ? (
-            <ContinueLessonCard lesson={data.nextLesson} />
-          ) : null}
-          <DashboardStats stats={data.stats} />
-          <StudentCoursesPreview courses={data.activeCourses} />
-        </div>
-
-        <aside className="flex min-w-0 flex-col gap-5">
-          <ScheduleList schedule={data.schedule} />
-          {data.latestResult ? (
-            <LatestResultCard result={data.latestResult} />
-          ) : null}
-          <AttendanceSummaryCard attendance={data.attendance} />
-        </aside>
-      </div>
-
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(24rem,0.7fr)]">
-        <NotificationsList notifications={data.notifications} />
-        <QuickActions actions={data.quickActions} />
-      </div>
-    </div>
-  );
+  const importantUpdate = data.notifications[0];
+  return <div className="flex flex-col gap-6 lg:gap-7">
+    <DashboardWelcomeHeader student={data.student} summary={data.statusSummary} nextLesson={data.nextLesson} />
+    {data.nextLesson ? <ContinueLessonCard lesson={data.nextLesson} /> : <EmptyState title="لا توجد مهمة حالية" description="عند توفر درس أو اختبار جديد ستظهر أقرب خطوة لك هنا." />}
+    <StudentCoursesPreview courses={data.activeCourses} />
+    {importantUpdate ? <section className="rounded-lg border bg-card p-4 shadow-sm shadow-foreground/5" aria-labelledby="important-update-title"><div className="flex items-start gap-3 text-start"><span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary"><BellIcon aria-hidden="true" className="size-4" /></span><div className="min-w-0"><p className="text-xs font-medium text-primary">تحديث مهم</p><h2 id="important-update-title" className="mt-1 text-base font-semibold">{importantUpdate.title}</h2><p className="mt-1 text-sm leading-6 text-muted-foreground">{importantUpdate.description}</p><Link href="/notifications" className="mt-3 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50">عرض الإشعارات</Link></div></div></section> : null}
+    <section className="flex flex-col gap-4"><SectionHeader title="وصول سريع" description="اختصارات قليلة للأمور التي قد تحتاجينها الآن." /><QuickActions actions={data.quickActions.slice(0, 3)} /></section>
+  </div>;
 }

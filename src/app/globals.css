@@ -110,3 +110,8 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+@keyframes navigation-progress {
+  from { transform: translateX(180%); }
+  to { transform: translateX(-260%); }
+}

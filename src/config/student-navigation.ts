@@ -2,67 +2,22 @@ export type StudentNavigationIcon =
   | "home"
   | "courses"
   | "exams"
-  | "results"
-  | "attendance"
   | "subscriptions"
-  | "student-card"
-  | "profile";
+  | "center";
 
 export type StudentNavigationItem = {
   title: string;
-  href: string;
+  href: "/dashboard" | "/courses" | "/exams" | "/subscriptions" | "/attendance";
   description: string;
   icon: StudentNavigationIcon;
-  disabled?: boolean;
+  mobilePriority: boolean;
 };
 
-export const studentNavigation: StudentNavigationItem[] = [
-  {
-    title: "الرئيسية",
-    href: "/dashboard",
-    description: "ملخص التعلم الحالي والأنشطة المهمة.",
-    icon: "home",
-  },
-  {
-    title: "كورساتي",
-    href: "/courses",
-    description: "كل الكورسات المسجلة وتفاصيل المنهج والدروس.",
-    icon: "courses",
-  },
-  {
-    title: "الاختبارات",
-    href: "/exams",
-    description: "الاختبارات والتقييمات المتاحة والقادمة.",
-    icon: "exams",
-  },
-  {
-    title: "النتائج",
-    href: "/results",
-    description: "سجل نتائج الاختبارات ومحاولات الطالب.",
-    icon: "results",
-  },
-  {
-    title: "الحضور",
-    href: "/attendance",
-    description: "ملخص الحضور وسجل الحصص حسب المادة.",
-    icon: "attendance",
-  },
-  {
-    title: "الاشتراكات",
-    href: "/subscriptions",
-    description: "سيتم تفعيلها مع مرحلة المدفوعات.",
-    icon: "subscriptions",
-  },
-  {
-    title: "بطاقة الطالب",
-    href: "/student-card",
-    description: "بطاقة هوية الطالب والكود التعريفي التجريبي.",
-    icon: "student-card",
-  },
-  {
-    title: "الملف الشخصي",
-    href: "/profile",
-    description: "تعديل البيانات الشخصية سيضاف لاحقا.",
-    icon: "profile",
-  },
-];
+/** The single source of truth for authenticated student navigation. */
+export const studentNavigation = [
+  { title: "الرئيسية", href: "/dashboard", description: "ملخص تعلمك وأقرب خطوة مفيدة لك.", icon: "home", mobilePriority: true },
+  { title: "كورسـاتي", href: "/courses", description: "الدروس والكورسات المتاحة لك.", icon: "courses", mobilePriority: true },
+  { title: "الامتحانات والنتائج", href: "/exams", description: "الامتحانات المتاحة ونتائجك الأخيرة.", icon: "exams", mobilePriority: true },
+  { title: "اشتراكاتي", href: "/subscriptions", description: "حالة الاشتراكات وطلبات الدفع.", icon: "subscriptions", mobilePriority: false },
+  { title: "السنتر", href: "/attendance", description: "مجموعات السنتر وملخص الحضور.", icon: "center", mobilePriority: true },
+] as const satisfies readonly StudentNavigationItem[];

@@ -3,6 +3,8 @@ export { Container } from "@/components/shared/container";
 export { EmptyState } from "@/components/shared/empty-state";
 export { ErrorState } from "@/components/shared/error-state";
 export { LoadingCard } from "@/components/shared/loading-card";
+export { InlineSpinner } from "@/components/shared/inline-spinner";
+export { PageSkeleton } from "@/components/shared/page-skeleton";
 export { PageHeader } from "@/components/shared/page-header";
 export { SectionHeader } from "@/components/shared/section-header";
 export { StatCard } from "@/components/shared/stat-card";

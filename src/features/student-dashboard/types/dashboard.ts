@@ -7,7 +7,6 @@ export type Student = {
   grade: string;
   group: string;
   avatarInitials: string;
-  studentCode: string;
 };
 
 export type StudentCourseStatus = "active" | "locked" | "review";

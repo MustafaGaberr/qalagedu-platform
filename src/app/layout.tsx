@@ -4,6 +4,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 
 import { ThemeProvider } from "@/components/shared/theme-provider";
+import { BrandedApplicationLoader } from "@/components/shared/branded-application-loader";
+import { NavigationFeedback } from "@/components/shared/navigation-feedback";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { appConfig } from "@/config/app";
 import { getTextDirection, type AppLocale } from "@/i18n/locales";
@@ -45,7 +47,7 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>
           <ThemeProvider>
-            <TooltipProvider>{children}</TooltipProvider>
+            <TooltipProvider><BrandedApplicationLoader /><NavigationFeedback />{children}</TooltipProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

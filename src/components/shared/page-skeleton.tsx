@@ -1,0 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
+
+type PageSkeletonProps = { cards?: number; className?: string };
+export function PageSkeleton({ cards = 3, className }: PageSkeletonProps) { return <div aria-busy="true" aria-label="جارٍ تحميل المحتوى" className={className ?? "flex flex-col gap-5"}><div className="rounded-lg border bg-card p-5"><Skeleton className="h-5 w-32" /><Skeleton className="mt-3 h-8 w-2/3" /><Skeleton className="mt-3 h-4 w-full max-w-xl" /></div><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{Array.from({ length: cards }).map((_, index) => <div key={index} className="rounded-lg border bg-card p-4"><Skeleton className="h-5 w-2/3" /><Skeleton className="mt-4 h-4 w-full" /><Skeleton className="mt-2 h-4 w-4/5" /><Skeleton className="mt-5 h-10 w-full" /></div>)}</div></div>; }
