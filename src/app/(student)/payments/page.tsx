@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PaymentsPage } from "@/features/student-subscriptions/components/payments-page";
-import { getStudentPayments } from "@/features/student-subscriptions/services/student-subscriptions-service";
-export const metadata: Metadata = { title: "المدفوعات" };
-export default async function Page() { return <PaymentsPage payments={await getStudentPayments()}/>; }
+import { PaymentsPage } from "@/features/student-access/components/access-pages";
+import { getStudentAccessData } from "@/features/student-access/services/access-service";
+export const metadata: Metadata = { title: "طلبات الدفع" };
+export default function Page() { const { paymentRequests, paymentDestinations } = getStudentAccessData(); return <PaymentsPage payments={paymentRequests} destinations={paymentDestinations} />; }

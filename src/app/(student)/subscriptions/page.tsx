@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { SubscriptionsPage } from "@/features/student-subscriptions/components/subscriptions-page";
-import { getAvailableSubscriptionOffers, getStudentSubscriptions } from "@/features/student-subscriptions/services/student-subscriptions-service";
-export const metadata: Metadata = { title: "الاشتراكات" };
-export default async function Page() { const [subscriptions, offers] = await Promise.all([getStudentSubscriptions(),getAvailableSubscriptionOffers()]); return <SubscriptionsPage subscriptions={subscriptions} offers={offers}/>; }
+import { StudentSubscriptionsPage } from "@/features/student-access/components/access-pages";
+import { getStudentAccessData } from "@/features/student-access/services/access-service";
+
+export const metadata: Metadata = { title: "اشتراكاتي" };
+export default function Page() { const { onlineEntitlements, paymentRequests } = getStudentAccessData(); return <StudentSubscriptionsPage entitlements={onlineEntitlements} payments={paymentRequests} />; }
