@@ -20,7 +20,7 @@ export function StudentAppShell({
   notifications,
 }: StudentAppShellProps) {
   const pathname = usePathname();
-  if (pathname === "/courses" || pathname.startsWith("/courses/")) return <>{children}</>;
+  if (pathname === "/courses") return <>{children}</>;
   return (
     <div className="min-h-screen bg-secondary/35 lg:grid lg:grid-cols-[18rem_minmax(0,1fr)]">
       <StudentSidebar student={student} />

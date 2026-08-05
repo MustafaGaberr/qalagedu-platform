@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-import { LibraryPage } from "@/features/student-access/components/access-pages";
-import { getStudentAccessData } from "@/features/student-access/services/access-service";
-export const metadata: Metadata = { title: "مكتبتي" };
-export default function Page() { return <LibraryPage items={getStudentAccessData().libraryItems} />; }
+import { MyCoursesPage } from "@/features/student-learning/components/learning-pages";
+import { getLearningCourses } from "@/features/student-learning/services/learning-service";
+export default function LibraryRoute() { return <MyCoursesPage courses={getLearningCourses()} />; }
