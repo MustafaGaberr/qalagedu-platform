@@ -2,22 +2,12 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  BellIcon,
-  CheckCheckIcon,
-  CheckCircle2Icon,
-  CircleIcon,
-  SearchIcon,
-} from "lucide-react";
+import { BellIcon, CheckCircle2Icon, CircleIcon, SearchIcon } from "lucide-react";
 
 import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  mockMarkAllNotificationsAsRead,
-  mockMarkNotificationAsRead,
-} from "@/features/student-account/services/account-service";
 import type { StudentAccountNotification } from "@/features/student-account/types/account";
 
 type NotificationCenterProps = {
@@ -27,7 +17,7 @@ type NotificationCenterProps = {
 export function NotificationCenter({
   initialNotifications,
 }: NotificationCenterProps) {
-  const [notifications, setNotifications] = useState(() =>
+  const [notifications] = useState(() =>
     initialNotifications.map((item) => ({ ...item })),
   );
   const [query, setQuery] = useState("");
@@ -41,27 +31,6 @@ export function NotificationCenter({
     );
   }, [notifications, query]);
 
-  async function markOneAsRead(notificationId: string) {
-    const updated = await mockMarkNotificationAsRead(notificationId);
-
-    if (!updated) return;
-
-    setNotifications((current) =>
-      current.map((item) =>
-        item.id === notificationId ? { ...updated } : item,
-      ),
-    );
-  }
-
-  async function markAllAsRead() {
-    const updated = await mockMarkAllNotificationsAsRead();
-    const updatedById = new Map(updated.map((item) => [item.id, item]));
-
-    setNotifications((current) =>
-      current.map((item) => ({ ...(updatedById.get(item.id) ?? item) })),
-    );
-  }
-
   return (
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -71,18 +40,9 @@ export function NotificationCenter({
             {unreadCount > 0
               ? `${unreadCount} إشعارات غير مقروءة.`
               : "تمت قراءة جميع الإشعارات."}{" "}
-            حالة القراءة مؤقتة وقد تعود بعد تحديث الصفحة.
+            لا يوفر الخادم إشعارات الطالب حاليًا.
           </p>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={markAllAsRead}
-          disabled={unreadCount === 0}
-        >
-          <CheckCheckIcon data-icon="inline-start" />
-          تحديد الكل كمقروء
-        </Button>
       </div>
 
       <div className="relative">
@@ -129,18 +89,6 @@ export function NotificationCenter({
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2 sm:shrink-0">
-                  {!item.isRead ? (
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      onClick={() => markOneAsRead(item.id)}
-                      aria-label={`تحديد ${item.title} كمقروء`}
-                    >
-                      <CheckCircle2Icon data-icon="inline-start" />
-                      تحديد كمقروء
-                    </Button>
-                  ) : null}
                   {item.relatedRoute ? (
                     <Button
                       size="sm"
@@ -157,8 +105,8 @@ export function NotificationCenter({
         </div>
       ) : (
         <EmptyState
-          title="لا توجد إشعارات مطابقة"
-          description="غيّري كلمات البحث لعرض بقية الإشعارات."
+          title="لا توجد إشعارات متاحة"
+          description="لم يوفّر الخادم endpoint لإشعارات الطلاب حتى الآن."
         />
       )}
     </div>

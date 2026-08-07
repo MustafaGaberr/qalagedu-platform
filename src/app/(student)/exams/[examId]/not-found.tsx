@@ -9,7 +9,7 @@ export default function ExamNotFound() {
     <EmptyState
       icon={FileQuestionIcon}
       title="الاختبار غير موجود"
-      description="ربما تغير رابط الاختبار أو أنه غير منشور ضمن بيانات الطالب التجريبية."
+      description="ربما تغير رابط الاختبار أو أنه غير مخصص لهذا الحساب."
       action={
         <Button render={<Link href="/exams" />} nativeButton={false}>
           العودة إلى الاختبارات

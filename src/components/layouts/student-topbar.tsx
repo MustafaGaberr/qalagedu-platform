@@ -29,7 +29,7 @@ import type {
 } from "@/features/student-dashboard/types/dashboard";
 import type { StudentAccountNotification } from "@/features/student-account/types/account";
 import { studentProfileMenu } from "@/config/student-profile-menu";
-import { MockLogoutConfirmation } from "@/features/student-account/components/mock-logout-button";
+import { LogoutConfirmation } from "@/features/student-account/components/logout-button";
 
 
 type StudentTopbarProps = {
@@ -60,7 +60,7 @@ export function StudentTopbar({
               ? "النتائج"
               : pathname === "/student-card" || pathname === "/attendance"
                 ? "السنتر"
-                  : pathname.startsWith("/courses/")
+                  : pathname.startsWith("/courses/") || pathname.startsWith("/learn/")
                 ? "تفاصيل الكورس"
                 : pathname === "/courses"
                   ? "كورساتي"
@@ -198,7 +198,7 @@ export function StudentTopbar({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <MockLogoutConfirmation
+          <LogoutConfirmation
             open={logoutOpen}
             onOpenChange={setLogoutOpen}
           />

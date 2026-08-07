@@ -25,12 +25,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { appConfig } from "@/config/app";
 import { PasswordInput } from "@/features/auth/components/password-input";
-import { simulateAuthSubmission } from "@/features/auth/lib/mock-submit";
+import { login, logout } from "@/features/auth/services/auth-service";
 import {
   loginSchema,
   type LoginFormValues,
 } from "@/features/auth/schemas/auth";
 import type { AuthSubmissionState } from "@/features/auth/types/auth";
+import { toApiError } from "@/lib/api/errors";
 
 export function LoginForm() {
   const router = useRouter();
@@ -49,23 +50,21 @@ export function LoginForm() {
 
   async function onSubmit(values: LoginFormValues) {
     setSubmission({ status: "idle" });
-
-    if (values.identifier.toLowerCase().includes("fail")) {
-      setSubmission({
-        status: "error",
-        message: "تم عرض خطأ تجريبي فقط. لا يوجد اتصال بخادم مصادقة.",
-      });
-      return;
-    }
-
-    const result = await simulateAuthSubmission("login");
-    setSubmission({
-      status: result.ok ? "success" : "error",
-      message: result.message,
-    });
-
-    if (result.ok) {
+    try {
+      const session = await login(values.identifier, values.password);
+      if (session.role !== "STUDENT") {
+        await logout().catch(() => undefined);
+        setSubmission({
+          status: "error",
+          message: "هذه المنصة مخصصة لحسابات الطلاب.",
+        });
+        return;
+      }
+      setSubmission({ status: "success", message: "تم تسجيل الدخول بنجاح." });
       router.push("/dashboard");
+      router.refresh();
+    } catch (error) {
+      setSubmission({ status: "error", message: toApiError(error).message });
     }
   }
 
@@ -77,7 +76,7 @@ export function LoginForm() {
       {submission.status !== "idle" ? (
         <Alert variant={submission.status === "error" ? "destructive" : "default"}>
           <AlertTitle>
-            {submission.status === "error" ? "تعذر تنفيذ المحاكاة" : "تمت المحاكاة"}
+            {submission.status === "error" ? "تعذر تسجيل الدخول" : "تم تسجيل الدخول"}
           </AlertTitle>
           <AlertDescription>{submission.message}</AlertDescription>
         </Alert>
@@ -130,7 +129,7 @@ export function LoginForm() {
               <FieldContent>
                 <FieldLabel htmlFor="remember">تذكرني على هذا الجهاز</FieldLabel>
                 <FieldDescription>
-                  لا يتم حفظ بيانات اعتماد في هذه المرحلة.
+                  تظل جلستك محمية في ملف ارتباط HTTP-only.
                 </FieldDescription>
               </FieldContent>
             </Field>

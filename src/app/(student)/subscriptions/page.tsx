@@ -3,4 +3,4 @@ import { StudentSubscriptionsPage } from "@/features/student-access/components/a
 import { getStudentAccessData } from "@/features/student-access/services/access-service";
 
 export const metadata: Metadata = { title: "اشتراكاتي" };
-export default function Page() { const { onlineEntitlements, paymentRequests } = getStudentAccessData(); return <StudentSubscriptionsPage entitlements={onlineEntitlements} payments={paymentRequests} />; }
+export default async function Page() { const { onlineEntitlements, paymentRequests } = await getStudentAccessData(); return <StudentSubscriptionsPage entitlements={onlineEntitlements} payments={paymentRequests} />; }

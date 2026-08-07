@@ -7,7 +7,7 @@ import { LoginForm } from "@/features/auth/components/login-form";
 export const metadata: Metadata = {
   title: `تسجيل الدخول | ${appConfig.name}`,
   description:
-    "واجهة تسجيل دخول عربية مهيأة للطلاب، مع تحقق محلي وتجربة محاكاة فقط دون مصادقة حقيقية.",
+    "تسجيل دخول الطلاب بأمان إلى منصة Qalag EDU.",
   robots: {
     index: false,
     follow: false,
@@ -31,7 +31,7 @@ export default function LoginPage() {
   return (
     <AuthShell
       title="تسجيل الدخول"
-      description="ادخل ببياناتك التجريبية لمعاينة حالة تسجيل الدخول فقط."
+      description="ادخل بيانات حسابك للوصول إلى دروسك واشتراكاتك."
     >
       <LoginForm />
     </AuthShell>

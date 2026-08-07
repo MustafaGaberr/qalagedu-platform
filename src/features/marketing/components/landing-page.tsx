@@ -12,10 +12,15 @@ import { HeroSlider } from "@/features/marketing/components/hero-slider";
 import { TeacherPreviewCard } from "@/features/marketing/components/teacher-preview-card";
 import { centerSchedulePreviews, educationalStages, featuredCourses, heroBanners, platformBenefits, revisionPackages, storeProducts, teacherPreviews, testimonials } from "@/features/marketing/data/landing";
 import { cn } from "@/lib/utils";
+import type { WebsiteSection } from "@/features/public-catalog/services/catalog-service";
 
-export function LandingPage() {
+export function LandingPage({ websiteSections = [] }: { websiteSections?: WebsiteSection[] }) {
   return <main>
     <HeroSlider banners={heroBanners} />
+
+    {websiteSections.length ? <MarketingSection id="website-content">
+      <div className="grid gap-5 md:grid-cols-2">{websiteSections.map((section) => <Card key={section.id}><CardContent className="py-1"><p className="text-sm font-medium text-primary">{section.subtitle ?? section.type}</p>{section.title ? <h2 className="mt-2 text-xl font-semibold">{section.title}</h2> : null}{section.body ? <p className="mt-2 leading-7 text-muted-foreground">{section.body}</p> : null}{section.ctaLabel && section.ctaUrl ? <Link href={section.ctaUrl} className={cn(buttonVariants({ variant: "outline" }), "mt-4")}>{section.ctaLabel}</Link> : null}</CardContent></Card>)}</div>
+    </MarketingSection> : null}
 
     <MarketingSection id="why-qalag" muted>
       <SectionHeader title="لماذا يختار الطلاب والأهل قلاّج؟" description="تجربة تعليمية عملية تجمع المتابعة المرنة والموارد التي يحتاجها الطالب طوال العام." />
@@ -46,7 +51,7 @@ export function LandingPage() {
     </MarketingSection> : null}
 
     <MarketingSection id="store">
-      <SectionHeader title="المتجر التعليمي" description="معاينة لمواد مساعدة ستتوفر في المتجر: كتب PDF وملخصات ومراجعات ونماذج امتحانات." action={<span aria-disabled="true" className={cn(buttonVariants({ variant: "outline" }), "cursor-not-allowed opacity-60")}>المتجر قريباً</span>} />
+      <SectionHeader title="المتجر التعليمي" description="كتب وملخصات ومراجعات ونماذج امتحانات منشورة في المتجر." action={<Link href="/store" className={buttonVariants({ variant: "outline" })}>فتح المتجر</Link>} />
       <div className="grid gap-5 md:grid-cols-3">{storeProducts.map((product) => <Card key={product.id} className="h-full"><Image src={product.image.src} alt={product.image.alt} width={640} height={360} className="aspect-[16/9] w-full bg-secondary object-cover" /><CardContent className="flex h-full flex-col py-1"><div className="flex items-center justify-between gap-3"><span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary"><StoreIcon aria-hidden="true" className="size-4" />{product.type}</span>{product.price ? <span className="font-semibold text-foreground">{product.price}</span> : <span className="rounded-full bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">مجاني</span>}</div><h3 className="mt-3 font-semibold text-foreground">{product.title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{product.publisher} · {product.subject} · {product.grade}</p></CardContent></Card>)}</div>
     </MarketingSection>
 

@@ -9,7 +9,7 @@ export default function ResultNotFound() {
     <EmptyState
       icon={FileQuestionIcon}
       title="النتيجة غير موجودة"
-      description="ربما تم تحديث رابط المحاولة أو أن النتيجة التجريبية المؤقتة لم تعد موجودة."
+      description="ربما تم تحديث رابط المحاولة أو لم تُنشر النتيجة لهذا الحساب بعد."
       action={
         <Button render={<Link href="/results" />} nativeButton={false}>
           العودة إلى النتائج

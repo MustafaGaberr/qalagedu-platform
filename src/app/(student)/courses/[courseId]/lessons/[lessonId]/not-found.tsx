@@ -9,7 +9,7 @@ export default function LessonNotFound() {
     <EmptyState
       icon={FileQuestionIcon}
       title="الدرس غير موجود"
-      description="ربما تم تغيير رابط الدرس أو أن الدرس لا ينتمي إلى هذا الكورس في البيانات التجريبية."
+      description="ربما تم تغيير رابط الدرس أو أنه غير منشور ضمن هذا الكورس."
       action={
         <Button render={<Link href="/courses" />} nativeButton={false}>
           العودة إلى كورساتي

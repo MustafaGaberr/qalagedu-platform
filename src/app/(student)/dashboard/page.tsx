@@ -7,7 +7,7 @@ import { getStudentDashboard } from "@/features/student-dashboard/services/stude
 export const metadata: Metadata = {
   title: `لوحة الطالب | ${appConfig.name}`,
   description:
-    "لوحة طالب عربية تعرض ملخص التعلم والكورسات والحضور والنتائج باستخدام بيانات تجريبية فقط.",
+    "لوحة الطالب لعرض الوصول الإلكتروني والدروس والاختبارات.",
   robots: {
     index: false,
     follow: false,

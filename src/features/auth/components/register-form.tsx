@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { LoaderCircleIcon } from "lucide-react";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -33,14 +34,16 @@ import {
 import { appConfig } from "@/config/app";
 import { educationalGrades } from "@/config/education";
 import { PasswordInput } from "@/features/auth/components/password-input";
-import { simulateAuthSubmission } from "@/features/auth/lib/mock-submit";
+import { registerStudent } from "@/features/auth/services/auth-service";
 import {
   registerSchema,
   type RegisterFormValues,
 } from "@/features/auth/schemas/auth";
 import type { AuthSubmissionState } from "@/features/auth/types/auth";
+import { toApiError } from "@/lib/api/errors";
 
 export function RegisterForm() {
+  const router = useRouter();
   const [submission, setSubmission] = React.useState<AuthSubmissionState>({
     status: "idle",
   });
@@ -60,20 +63,20 @@ export function RegisterForm() {
 
   async function onSubmit(values: RegisterFormValues) {
     setSubmission({ status: "idle" });
-
-    if (values.studentName.includes("خطأ")) {
-      setSubmission({
-        status: "error",
-        message: "تم عرض خطأ تجريبي فقط. لا يوجد إرسال فعلي للبيانات.",
+    try {
+      await registerStudent({
+        name: values.studentName,
+        phone: values.studentPhone,
+        password: values.password,
+        educationalGrade: values.grade,
+        guardianPhone: values.parentPhone,
       });
-      return;
+      setSubmission({ status: "success", message: "تم إنشاء الحساب وتسجيل الدخول." });
+      router.push("/dashboard");
+      router.refresh();
+    } catch (error) {
+      setSubmission({ status: "error", message: toApiError(error).message });
     }
-
-    const result = await simulateAuthSubmission("register");
-    setSubmission({
-      status: result.ok ? "success" : "error",
-      message: result.message,
-    });
   }
 
   return (
@@ -84,7 +87,7 @@ export function RegisterForm() {
       {submission.status !== "idle" ? (
         <Alert variant={submission.status === "error" ? "destructive" : "default"}>
           <AlertTitle>
-            {submission.status === "error" ? "تعذر تنفيذ المحاكاة" : "تمت المحاكاة"}
+            {submission.status === "error" ? "تعذر إنشاء الحساب" : "تم إنشاء الحساب"}
           </AlertTitle>
           <AlertDescription>{submission.message}</AlertDescription>
         </Alert>
