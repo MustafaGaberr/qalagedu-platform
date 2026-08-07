@@ -1,5 +1,6 @@
 import "server-only";
 
+import { appConfig } from "@/config/app";
 import { serverApiRequest } from "@/lib/api/server";
 import { getPublicCourse, getPublicTeacher } from "@/features/public-catalog/services/catalog-service";
 import type { AccessPackageType } from "@/features/public-catalog/types/catalog";
@@ -44,7 +45,7 @@ const mapPayment = (item: RawPayment): PaymentRequest => ({
   packageId: item.packageId,
   courseTitle: item.course.title,
   packageTitle: item.package.title,
-  teacher: "Qalag EDU",
+  teacher: appConfig.name,
   amount: Number(item.amount),
   method: method(item.paymentMethod),
   destinationId: item.destinationId,
@@ -78,7 +79,7 @@ export async function getStudentEntitlements(): Promise<OnlineEntitlement[]> {
       courseId: item.courseId,
       packageId: item.packageId ?? item.id,
       courseTitle: item.course.title,
-      teacher: teacher?.name ?? "Qalag EDU",
+      teacher: teacher?.name ?? appConfig.name,
       packageTitle: item.package?.title ?? "وصول مخصص",
       packageType: item.package?.type ?? "CUSTOM",
       scope: item.scopeType,
@@ -114,7 +115,7 @@ export async function getPurchaseSummary(courseId?: string, packageId?: string):
     courseId,
     packageId,
     courseTitle: course.title,
-    teacher: teacher?.name ?? "Qalag EDU",
+    teacher: teacher?.name ?? appConfig.name,
     packageTitle: packageItem.title,
     packageType: packageItem.type,
     price: packageItem.price,

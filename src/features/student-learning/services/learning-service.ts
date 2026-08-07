@@ -1,5 +1,6 @@
 import "server-only";
 
+import { appConfig } from "@/config/app";
 import { getPublicCourse, getPublicTeacher } from "@/features/public-catalog/services/catalog-service";
 import { getStudentEntitlements } from "@/features/student-access/services/access-service";
 import { serverApiRequest } from "@/lib/api/server";
@@ -43,7 +44,7 @@ async function courseFromEntitlement(courseId: string): Promise<LearningCourse |
     totalLessons: lessons.length,
     nextLessonId: lessons.find((lesson) => progressByLesson.get(lesson.id)?.status !== "COMPLETED")?.id,
     title: catalog.title,
-    teacher: teacher?.name ?? "Qalag EDU",
+    teacher: teacher?.name ?? appConfig.name,
     subject: catalog.subject,
     grade: catalog.grade,
     packageType: entitlement.packageType,
@@ -173,7 +174,7 @@ export async function getUnifiedResults(): Promise<UnifiedStudentResult[]> {
     courseId: item.paperExam.course.id,
     title: item.paperExam.title,
     subject: item.paperExam.course.title,
-    teacher: "Qalag EDU",
+    teacher: appConfig.name,
     date: item.paperExam.examDate ?? item.updatedAt,
     maxScore: Number(item.paperExam.maxScore),
     studentScore: item.score === null ? undefined : Number(item.score),

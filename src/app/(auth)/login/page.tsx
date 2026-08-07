@@ -6,15 +6,14 @@ import { LoginForm } from "@/features/auth/components/login-form";
 
 export const metadata: Metadata = {
   title: `تسجيل الدخول | ${appConfig.name}`,
-  description:
-    "تسجيل دخول الطلاب بأمان إلى منصة Qalag EDU.",
+  description: `تسجيل دخول الطلاب بأمان إلى منصة ${appConfig.name}.`,
   robots: {
     index: false,
     follow: false,
   },
   openGraph: {
     title: `تسجيل الدخول | ${appConfig.name}`,
-    description: "سجل دخولك إلى تجربة الطالب في Qalag EDU.",
+    description: `سجل دخولك إلى تجربة الطالب في ${appConfig.name}.`,
     locale: "ar_EG",
     images: [
       {

@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Student Platform
 
-## Getting Started
+Student-facing Next.js application for the educational platform.
 
-First, run the development server:
+## Runtime and local setup
+
+- Node.js 24.x
+- pnpm 11.x
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install --frozen-lockfile
+cp .env.example .env.local
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+All `NEXT_PUBLIC_*` variables in `.env.example` are required. The API variable
+is one full REST base URL, including its prefix and version (for example,
+`https://api.example.invalid/api/v1`). Public variables are embedded by Next.js
+at build time, so configure them in Hostinger before building.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm lint
+pnpm typecheck
+pnpm build
+```
 
-## Learn More
+## Hostinger managed Node.js Web App
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js version: `24.x`
+- Install command: `pnpm install --frozen-lockfile --prod=false`
+- Build command: `pnpm build`
+- Start command: `pnpm start`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy this repository as a Next.js Web App. The development preview routes
+under `/dev` return 404 when `NODE_ENV=production`.

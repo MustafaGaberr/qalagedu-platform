@@ -1,5 +1,6 @@
 import "server-only";
 
+import { appConfig } from "@/config/app";
 import { serverApiRequest } from "@/lib/api/server";
 import { catalogCourses, catalogProducts, catalogTeachers } from "@/features/public-catalog/data/catalog";
 import type { AccessPackage, CatalogCourse, CatalogTeacher, StoreProduct } from "../types/catalog";
@@ -178,7 +179,10 @@ export async function getStoreProducts(): Promise<StoreProduct[]> {
         id: item.id,
         title: item.title,
         type: item.type,
-        publisher: typeof preview.publisher === "string" ? preview.publisher : "Qalag EDU",
+        publisher:
+          typeof preview.publisher === "string"
+            ? preview.publisher
+            : appConfig.name,
         grade: typeof preview.grade === "string" ? preview.grade : "كل الصفوف",
         gradeId: typeof preview.gradeId === "string" ? preview.gradeId : "all",
         subject: typeof preview.subject === "string" ? preview.subject : (item.course?.title ?? "مادة تعليمية"),

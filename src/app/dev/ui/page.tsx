@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import {
   AlertCircleIcon,
   BellIcon,
@@ -87,6 +88,8 @@ const tokenSamples = [
 ];
 
 export default function DevUiPage() {
+  if (process.env.NODE_ENV === "production") notFound();
+
   return (
     <main className="min-h-screen bg-background">
       <Container size="wide" className="py-8 sm:py-10">
