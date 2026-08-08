@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { appConfig } from "@/config/app";
 import { MobileLandingPage } from "@/features/marketing/components/mobile-landing-page";
-import { getPublicCourses, getPublicTeachers, getStoreProducts, getWebsiteSections } from "@/features/public-catalog/services/catalog-service";
+import { getHomepageCatalog, getPublicTeachers, getWebsiteSections } from "@/features/public-catalog/services/catalog-service";
 
 export const metadata: Metadata = {
   title: `${appConfig.name} | منصة تعليمية عربية للطلاب`,
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [sections, teachers, courses, products] = await Promise.all([getWebsiteSections(), getPublicTeachers(), getPublicCourses(), getStoreProducts()]);
+  const [sections, teachers, catalog] = await Promise.all([getWebsiteSections(), getPublicTeachers(), getHomepageCatalog()]);
+  const { courses, products } = catalog;
   return <MobileLandingPage sections={sections} teachers={teachers} courses={courses} products={products} />;
 }

@@ -1,3 +1,5 @@
+import { connection } from "next/server";
+
 import { PublicFooter } from "@/components/layouts/public-footer";
 import { PublicHeader } from "@/components/layouts/public-header";
 import { getPublicBrand } from "@/features/public-catalog/services/catalog-service";
@@ -7,6 +9,7 @@ export default async function PublicLayout({
 }: {
   children: React.ReactNode;
 }) {
+  await connection();
   const brand = await getPublicBrand();
   return (
     <div className="flex min-h-screen flex-col">

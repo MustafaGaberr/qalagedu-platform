@@ -6,20 +6,24 @@ import { ApiError, type ApiErrorPayload } from "./errors";
 
 type ServerRequestInit = RequestInit & {
   next?: { revalidate?: number; tags?: string[] };
+  authenticated?: boolean;
 };
 
 export async function serverApiRequest<T>(path: string, init: ServerRequestInit = {}) {
-  const cookieStore = await cookies();
-  const headers = new Headers(init.headers);
-  const cookieHeader = cookieStore.toString();
-  if (cookieHeader) headers.set("cookie", cookieHeader);
+  const { authenticated = true, ...requestInit } = init;
+  const headers = new Headers(requestInit.headers);
+  if (authenticated) {
+    const cookieStore = await cookies();
+    const cookieHeader = cookieStore.toString();
+    if (cookieHeader) headers.set("cookie", cookieHeader);
+  }
 
   let response: Response;
   try {
     response = await fetch(apiUrl(path), {
-      ...init,
+      ...requestInit,
       headers,
-      cache: init.cache ?? "no-store",
+      cache: requestInit.cache ?? (requestInit.next?.revalidate === undefined ? "no-store" : undefined),
     });
   } catch {
     throw new ApiError();

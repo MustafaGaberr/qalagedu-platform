@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 
 import { appConfig } from "@/config/app";
 import { serverApiRequest } from "@/lib/api/server";
@@ -22,11 +23,11 @@ const duration = (seconds: number | null) => seconds ? `${Math.max(1, Math.round
 const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join(" ");
 const mapPackage = (item: RawPackage): AccessPackage => ({ id: item.id, type: item.type, title: item.title, price: Number(item.price), duration: item.accessDurationDays ? `${item.accessDurationDays} يومًا` : "وصول دائم", scope: item.description ?? "وفق نطاق الباقة", exams: item.counts.exams, files: item.counts.attachments, futureLessons: item.includeFutureLessons, thumbnailUrl: item.thumbnailUrl ?? undefined });
 
-async function loadCourses(): Promise<CatalogCourse[]> {
-  const [rawCourses, packages] = await Promise.all([
-    serverApiRequest<RawCourse[]>("catalog/courses", { next: { revalidate: 60 } }),
-    serverApiRequest<RawPackage[]>("catalog/packages", { next: { revalidate: 60 } }),
-  ]);
+const loadRawCourses = cache(() => serverApiRequest<RawCourse[]>("catalog/courses", { authenticated: false, next: { revalidate: 60 } }));
+const loadPackages = cache(() => serverApiRequest<RawPackage[]>("catalog/packages", { authenticated: false, next: { revalidate: 60 } }));
+const loadRawStoreProducts = cache(() => serverApiRequest<RawStoreProduct[]>("catalog/store", { authenticated: false, next: { revalidate: 60 } }));
+
+function mapCourses(rawCourses: RawCourse[], packages: RawPackage[]): CatalogCourse[] {
   return rawCourses.map((course) => ({
     id: course.id, title: course.title, subject: course.subject.name, grade: course.grade.name, gradeId: course.grade.id, term: course.term.name, teacherId: course.teacher.id, mode: mode(course.studyMode), description: course.description ?? "", cover: course.coverImage ?? appConfig.center.logo.src, coverAlt: `غلاف ${course.title}`, updatedAt: new Intl.DateTimeFormat("ar-EG", { dateStyle: "medium" }).format(new Date(course.updatedAt)),
     units: (course.units ?? []).map((unit) => ({ id: unit.id, title: unit.title, lessons: unit.lessons.map((lesson) => ({ id: lesson.id, title: lesson.title, preview: lesson.isFreePreview, duration: duration(lesson.durationSeconds), thumbnailUrl: lesson.thumbnailUrl ?? undefined })), examCount: unit.lessons.filter((lesson) => lesson.relatedExamId).length, attachmentCount: unit.lessons.reduce((sum, lesson) => sum + (lesson.attachments?.length ?? 0), 0) })),
@@ -34,18 +35,32 @@ async function loadCourses(): Promise<CatalogCourse[]> {
   }));
 }
 
+const loadCourses = cache(async (): Promise<CatalogCourse[]> => {
+  const [rawCourses, packages] = await Promise.all([loadRawCourses(), loadPackages()]);
+  return mapCourses(rawCourses, packages);
+});
+
 export const getPublicCourses = () => loadCourses();
 export async function getPublicCourse(id: string) { return (await loadCourses()).find((course) => course.id === id) ?? null; }
 export async function getPublicTeachers(): Promise<CatalogTeacher[]> {
-  const items = await serverApiRequest<RawTeacher[]>("catalog/teachers", { next: { revalidate: 60 } });
+  const items = await serverApiRequest<RawTeacher[]>("catalog/teachers", { authenticated: false, next: { revalidate: 60 } });
   return items.map((teacher) => ({ id: teacher.id, name: teacher.name, subject: teacher.teacherProfile?.subject ?? "مدرس", grades: [...new Set(teacher.coursesAsTeacher.map((course) => course.grade.name))], mode: teacher.coursesAsTeacher.some((course) => course.studyMode === "HYBRID") ? "BOTH" : teacher.coursesAsTeacher.some((course) => course.studyMode === "CENTER") ? "CENTER" : "ONLINE", intro: teacher.teacherProfile?.bio ?? "مدرس للكورسات المنشورة على المنصة.", initials: initials(teacher.name), photoUrl: teacher.teacherProfile?.photoUrl ?? undefined }));
 }
 export async function getPublicTeacher(id: string) { return (await getPublicTeachers()).find((teacher) => teacher.id === id) ?? null; }
 export async function getStoreProducts(): Promise<StoreProduct[]> {
-  const [items, courses] = await Promise.all([serverApiRequest<RawStoreProduct[]>("catalog/store", { next: { revalidate: 60 } }), loadCourses()]);
-  return items.map((item) => { const preview = item.previewMetadata ?? {}; return { id: item.id, title: item.title, type: item.type, publisher: typeof preview.teacherOrPublisher === "string" ? preview.teacherOrPublisher : appConfig.name, grade: typeof preview.grade === "string" ? preview.grade : "كل الصفوف", gradeId: typeof preview.gradeId === "string" ? preview.gradeId : "all", subject: typeof preview.subject === "string" ? preview.subject : (item.course?.title ?? "مادة تعليمية"), description: item.description ?? "", pageCount: typeof preview.pageCount === "number" ? preview.pageCount : undefined, format: typeof preview.format === "string" ? preview.format : "ملف رقمي", price: item.isFree ? 0 : Number(item.price), cover: item.imageUrl ?? appConfig.center.logo.src, coverAlt: typeof preview.coverAlt === "string" ? preview.coverAlt : `غلاف ${item.title}`, teacherId: courses.find((course) => course.id === item.courseId)?.teacherId, courseId: item.courseId ?? undefined, packageId: item.packageId ?? undefined }; });
+  const [items, courses] = await Promise.all([loadRawStoreProducts(), loadCourses()]);
+  return mapStoreProducts(items, courses);
 }
 export async function getStoreProduct(id: string) { return (await getStoreProducts()).find((product) => product.id === id) ?? null; }
-export const getWebsiteSections = () => serverApiRequest<WebsiteSection[]>("website/sections", { next: { revalidate: 60 } });
-export const getPublicBrand = () => serverApiRequest<PublicBrand | null>("website/brand", { next: { revalidate: 300 } });
-export async function searchPublicCatalog(query: string) { return serverApiRequest<{ query: string; results: SearchResult[] }>(`catalog/search?q=${encodeURIComponent(query)}`, { cache: "no-store" }); }
+export async function getHomepageCatalog() {
+  const [rawCourses, packages, products] = await Promise.all([loadRawCourses(), loadPackages(), loadRawStoreProducts()]);
+  const courses = mapCourses(rawCourses, packages);
+  return { courses, products: mapStoreProducts(products, courses) };
+}
+export const getWebsiteSections = () => serverApiRequest<WebsiteSection[]>("website/sections", { authenticated: false, next: { revalidate: 60 } });
+export const getPublicBrand = () => serverApiRequest<PublicBrand | null>("website/brand", { authenticated: false, next: { revalidate: 300 } });
+export async function searchPublicCatalog(query: string) { return serverApiRequest<{ query: string; results: SearchResult[] }>(`catalog/search?q=${encodeURIComponent(query)}`, { authenticated: false, cache: "no-store" }); }
+
+function mapStoreProducts(items: RawStoreProduct[], courses: CatalogCourse[]): StoreProduct[] {
+  return items.map((item) => { const preview = item.previewMetadata ?? {}; return { id: item.id, title: item.title, type: item.type, publisher: typeof preview.teacherOrPublisher === "string" ? preview.teacherOrPublisher : appConfig.name, grade: typeof preview.grade === "string" ? preview.grade : "كل الصفوف", gradeId: typeof preview.gradeId === "string" ? preview.gradeId : "all", subject: typeof preview.subject === "string" ? preview.subject : (item.course?.title ?? "مادة تعليمية"), description: item.description ?? "", pageCount: typeof preview.pageCount === "number" ? preview.pageCount : undefined, format: typeof preview.format === "string" ? preview.format : "ملف رقمي", price: item.isFree ? 0 : Number(item.price), cover: item.imageUrl ?? appConfig.center.logo.src, coverAlt: typeof preview.coverAlt === "string" ? preview.coverAlt : `غلاف ${item.title}`, teacherId: courses.find((course) => course.id === item.courseId)?.teacherId, courseId: item.courseId ?? undefined, packageId: item.packageId ?? undefined }; });
+}
