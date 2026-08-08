@@ -13,6 +13,7 @@ export type StudentCourseStatus = "active" | "locked" | "review";
 
 export type StudentCourse = {
   id: string;
+  cover: string;
   subject: string;
   teacher: string;
   grade: string;
@@ -37,6 +38,7 @@ export type NextLesson = {
   isLocked: boolean;
   unlockMessage: string;
   tone: CourseTone;
+  thumbnailUrl?: string;
 };
 
 export type ScheduleItem = {

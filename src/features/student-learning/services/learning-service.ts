@@ -44,6 +44,7 @@ async function courseFromEntitlement(courseId: string): Promise<LearningCourse |
     totalLessons: lessons.length,
     nextLessonId: lessons.find((lesson) => progressByLesson.get(lesson.id)?.status !== "COMPLETED")?.id,
     title: catalog.title,
+    cover: catalog.cover,
     teacher: teacher?.name ?? appConfig.name,
     subject: catalog.subject,
     grade: catalog.grade,

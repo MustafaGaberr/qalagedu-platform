@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ClockIcon, LockIcon, PlayCircleIcon, UnlockIcon } from "lucide-react";
 
 import { StatusBadge } from "@/components/shared/status-badge";
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/progress";
 import type { NextLesson } from "@/features/student-dashboard/types/dashboard";
 
-import { CourseVisual } from "./course-visual";
 
 type ContinueLessonCardProps = {
   lesson: NextLesson;
@@ -44,11 +44,7 @@ export function ContinueLessonCard({ lesson }: ContinueLessonCardProps) {
             {lesson.courseName} مع {lesson.teacher}
           </p>
         </div>
-        <CourseVisual
-          tone={lesson.tone}
-          label={lesson.courseName}
-          className="hidden sm:flex"
-        />
+        {lesson.thumbnailUrl ? <div className="relative hidden aspect-video overflow-hidden rounded-lg sm:block"><Image src={lesson.thumbnailUrl} alt={`صورة درس ${lesson.title}`} fill sizes="144px" className="object-cover" unoptimized /></div> : null}
       </CardHeader>
       <CardContent className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
         <div className="flex flex-col gap-4">

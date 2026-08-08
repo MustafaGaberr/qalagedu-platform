@@ -7,13 +7,16 @@ import { Container } from "@/components/shared/container";
 import { buttonVariants } from "@/components/ui/button";
 import { appConfig } from "@/config/app";
 import { cn } from "@/lib/utils";
+import { PublicSearch } from "@/features/public-catalog/components/public-search";
+import type { PublicBrand } from "@/features/public-catalog/services/catalog-service";
 
-export function PublicHeader() {
+export function PublicHeader({ brand }: { brand?: PublicBrand | null }) {
   return (
     <header className="sticky top-0 z-40 isolate border-b border-border/80 bg-background/94 backdrop-blur-md">
-      <Container size="wide" className="flex min-h-16 items-center justify-between gap-4 sm:min-h-18">
+      <Container size="wide" className="grid min-h-14 grid-cols-[2.5rem_1fr_2.5rem] items-center gap-2 sm:min-h-16 md:flex md:justify-between md:gap-4">
+        <div className="xl:hidden"><MobileNavigation /></div>
         <Link href="/" aria-label="العودة إلى الصفحة الرئيسية" className="rounded-xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
-          <AppLogo size="sm" />
+          <AppLogo size="sm" className="justify-center" logoSrc={brand?.logoSrc} brandName={brand?.brandName} centerName={brand?.centerName} />
         </Link>
 
         <nav className="hidden items-center gap-0.5 xl:flex" aria-label="التنقل العام">
@@ -31,6 +34,7 @@ export function PublicHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
+          <PublicSearch />
           <Link href={appConfig.authNavigation.login.href} className={buttonVariants({ variant: "ghost" })}>
             {appConfig.authNavigation.login.title}
           </Link>
@@ -40,7 +44,7 @@ export function PublicHeader() {
           </Link>
         </div>
 
-        <div className="xl:hidden"><MobileNavigation /></div>
+        <div className="md:hidden"><PublicSearch /></div>
       </Container>
     </header>
   );

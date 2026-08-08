@@ -18,6 +18,7 @@ export async function getStudentDashboard(): Promise<StudentDashboardData> {
     const next = course.lessons.find((lesson) => lesson.id === course.nextLessonId);
     return {
       id: course.courseId,
+      cover: course.cover,
       subject: course.subject,
       teacher: course.teacher,
       grade: course.grade,
@@ -56,6 +57,7 @@ export async function getStudentDashboard(): Promise<StudentDashboardData> {
       isLocked: false,
       unlockMessage: "متاح الآن",
       tone: activeCourses.find((course) => course.id === firstCourse.courseId)?.tone ?? "emerald",
+      thumbnailUrl: nextLesson.thumbnailUrl,
     } : null,
     schedule: [],
     latestResult: null,

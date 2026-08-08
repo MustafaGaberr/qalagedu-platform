@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { CourseDetail } from "@/features/public-catalog/components/detail-pages";
+import { ProtectedCourseDetail } from "@/features/public-catalog/components/protected-course-detail";
 import { getPublicCourse, getPublicTeacher } from "@/features/public-catalog/services/catalog-service";
 
 export default async function PublicCoursePage({ params }: { params: Promise<{ courseId: string }> }) {
@@ -8,5 +8,5 @@ export default async function PublicCoursePage({ params }: { params: Promise<{ c
   if (!course) notFound();
   const teacher = await getPublicTeacher(course.teacherId);
   if (!teacher) notFound();
-  return <CourseDetail course={course} teacher={teacher} />;
+  return <ProtectedCourseDetail course={course} teacher={teacher} />;
 }

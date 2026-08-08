@@ -50,6 +50,7 @@ export type LearningLesson = CatalogLesson & {
 
 export type LearningCourse = StudentCourseAccess & {
   title: string;
+  cover: string;
   teacher: string;
   subject: string;
   grade: string;

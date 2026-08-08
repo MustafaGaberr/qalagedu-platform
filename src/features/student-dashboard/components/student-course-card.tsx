@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpLeftIcon } from "lucide-react";
 
 import { StatusBadge } from "@/components/shared/status-badge";
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/progress";
 import type { StudentCourse } from "@/features/student-dashboard/types/dashboard";
 
-import { CourseVisual } from "./course-visual";
 
 type StudentCourseCardProps = {
   course: StudentCourse;
@@ -46,7 +46,7 @@ export function StudentCourseCard({ course }: StudentCourseCardProps) {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <CourseVisual tone={course.tone} label={course.subject} />
+        <div className="relative aspect-video overflow-hidden rounded-lg bg-secondary"><Image src={course.cover} alt={`غلاف ${course.subject}`} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized /></div>
         <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
           <span>{course.grade}</span>
           <span>

@@ -7,6 +7,9 @@ type AppLogoProps = {
   className?: string;
   showText?: boolean;
   size?: "sm" | "md" | "lg";
+  logoSrc?: string;
+  brandName?: string;
+  centerName?: string;
 };
 
 const logoSizes = {
@@ -31,18 +34,22 @@ export function AppLogo({
   className,
   showText = true,
   size = "md",
+  logoSrc = appConfig.center.logo.src,
+  brandName = appConfig.name,
+  centerName = appConfig.center.name,
 }: AppLogoProps) {
   const styles = logoSizes[size];
 
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <Image
-        src={appConfig.center.logo.src}
+        src={logoSrc}
         alt={appConfig.center.logo.alt}
         width={appConfig.center.logo.width}
         height={appConfig.center.logo.height}
         priority
         className={styles.mark}
+        unoptimized={logoSrc.startsWith("http")}
       />
       {showText ? (
         <div className="flex flex-col text-start">
@@ -52,10 +59,10 @@ export function AppLogo({
               styles.title
             )}
           >
-            {appConfig.name}
+            {brandName}
           </span>
           <span className={cn("text-muted-foreground", styles.subtitle)}>
-            {appConfig.center.name}
+            {centerName}
           </span>
         </div>
       ) : null}
